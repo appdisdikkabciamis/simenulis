@@ -53,25 +53,6 @@ function doGet(e) {
     const headers = data[0];
     const rows = data.slice(1);
     
-    // Fetch rejected NPSNs from 'ditolak' sheet
-    let rejectedNpsns = new Set();
-    const ditolakSheet = ss.getSheetByName("ditolak");
-    if (ditolakSheet) {
-      const dData = ditolakSheet.getDataRange().getValues();
-      if (dData.length > 1) {
-        const dHeaders = dData[0].map(h => String(h).trim().toLowerCase());
-        const npsnIndex = dHeaders.indexOf("npsn");
-        if (npsnIndex !== -1) {
-          for (let i = 1; i < dData.length; i++) {
-            const npsnVal = String(dData[i][npsnIndex]).trim();
-            if (npsnVal) {
-              rejectedNpsns.add(npsnVal);
-            }
-          }
-        }
-      }
-    }
-
     // Mapping data baris berdasarkan nama header
     const result = rows.map(row => {
       let obj = {};
@@ -80,17 +61,6 @@ function doGet(e) {
         const cleanHeader = String(header).trim();
         obj[cleanHeader] = row[index] !== undefined ? row[index] : "";
       });
-      
-      // Tambahkan flag isRejected jika NPSN ada di sheet ditolak
-      const npsnKey = Object.keys(obj).find(k => k.toLowerCase() === "npsn");
-      obj.isRejected = false;
-      if (npsnKey && obj[npsnKey]) {
-         const currentNpsn = String(obj[npsnKey]).trim();
-         if (rejectedNpsns.has(currentNpsn)) {
-            obj.isRejected = true;
-         }
-      }
-      
       return obj;
     });
 
