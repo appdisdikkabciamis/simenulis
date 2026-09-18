@@ -233,10 +233,10 @@
                 <!-- Filter Status -->
                 <select id="filterStatus" onchange="applyFilters()" class="w-full sm:w-auto border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:border-blue-500 transition-colors cursor-pointer">
                     <option value="">Semua Status</option>
-                    <option value="selesai">Selesai</option>
-                    <option value="proses">Dalam Proses</option>
-                    <option value="belum">Belum Mulai</option>
-                    <option value="ditolak">Verval Ditolak</option>
+                    <option value="belum mulai">Belum Mulai</option>
+                    <option value="sudah ttd kepsek">Sudah TTD Kepsek</option>
+                    <option value="mengisi biodata">Mengisi Biodata</option>
+                    <option value="verval ditolak">Verval Ditolak</option>
                 </select>
 
                 <!-- Search Box -->
@@ -529,14 +529,16 @@
                 let matchStat = true;
                 if (filterStat) {
                     const rawStatus = String(row['Status Progres'] || '').toLowerCase().trim();
-                    let rowStatCategory = 'proses';
+                    let rowStatCategory = rawStatus;
                     
-                    if (row.isRejected) {
-                        rowStatCategory = 'ditolak';
+                    if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
+                        rowStatCategory = 'verval ditolak';
                     } else if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') {
-                        rowStatCategory = 'belum';
-                    } else if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') {
-                        rowStatCategory = 'selesai';
+                        rowStatCategory = 'belum mulai';
+                    } else if (rawStatus.includes('sudah ttd kepsek')) {
+                        rowStatCategory = 'sudah ttd kepsek';
+                    } else if (rawStatus.includes('mengisi biodata')) {
+                        rowStatCategory = 'mengisi biodata';
                     }
 
                     matchStat = rowStatCategory === filterStat;
