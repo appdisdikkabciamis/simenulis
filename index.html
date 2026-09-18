@@ -263,7 +263,7 @@
                         <th class="px-4 py-3 font-semibold text-center whitespace-nowrap">SPTJM</th>
                         <th class="px-4 py-3 font-semibold text-center whitespace-nowrap">TTD PPK</th>
                         <th class="px-4 py-3 font-semibold text-center whitespace-nowrap">E-Materai</th>
-                        <th class="px-4 py-3 font-semibold whitespace-nowrap">Status Progres</th>
+                        <th class="px-4 py-3 font-semibold whitespace-nowrap">Status</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-700 text-sm text-slate-600 dark:text-slate-400">
@@ -438,13 +438,40 @@
                             videoList.innerHTML = '';
                         }
 
-                        globalData = result.data;
+                        globalData = result.data.map(row => {
+                            let currentStatus = '';
+                            if (row['Status']) {
+                                const s = String(row['Status']).toLowerCase().trim();
+                                if (s.includes('ditandatangani kepala sekolah')) {
+                                    row['Status'] = 'Sudah TTD Kepsek';
+                                    currentStatus = 'sudah ttd kepsek';
+                                } else if (s.includes('proses pengisian data')) {
+                                    row['Status'] = 'Mengisi Biodata';
+                                    currentStatus = 'mengisi biodata';
+                                } else {
+                                    currentStatus = s;
+                                }
+                            }
+                            
+                            // Auto-ceklis berdasarkan status
+                            if (row.isRejected || currentStatus.includes('tolak') || currentStatus === 'verval ditolak') {
+                                row['Biodata'] = 'ada';
+                            } else if (currentStatus === 'sudah ttd kepsek') {
+                                row['Biodata'] = 'ada';
+                                row['PKS'] = 'ada';
+                                row['SPTJM'] = 'ada';
+                            } else if (currentStatus === 'mengisi biodata') {
+                                row['Biodata'] = 'ada';
+                            }
+
+                            return row;
+                        });
                         
                         // Urutkan data berdasarkan status prioritas, lalu Kecamatan
                         globalData.sort((a, b) => {
                             const getWeight = (row) => {
                                 if (row.isRejected) return 1;
-                                const rawStatus = String(row['Status Progres'] || '').toLowerCase().trim();
+                                const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                                 if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
                                 if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 4;
                                 return 3;
@@ -529,7 +556,7 @@
                 // Filter Status
                 let matchStat = true;
                 if (filterStat) {
-                    const rawStatus = String(row['Status Progres'] || '').toLowerCase().trim();
+                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                     let rowStatCategory = rawStatus;
                     
                     if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
@@ -552,7 +579,7 @@
             filteredData.sort((a, b) => {
                 const getWeight = (row) => {
                     if (row.isRejected) return 1;
-                    const rawStatus = String(row['Status Progres'] || '').toLowerCase().trim();
+                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                     if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
                     if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 4;
                     return 3;
@@ -588,7 +615,7 @@
             let ditolak = 0;
 
             data.forEach(row => {
-                const status = String(row['Status Progres'] || '').toLowerCase().trim();
+                const status = String(row['Status'] || '').toLowerCase().trim();
                 
                 // Logika penghitungan
                 if (row.isRejected) {
@@ -635,7 +662,7 @@
                 
                 kecMap[kec].total++; // Hitung total sekolah
                 
-                const status = String(row['Status Progres'] || '').toLowerCase().trim();
+                const status = String(row['Status'] || '').toLowerCase().trim();
                 if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-') {
                     // Abaikan
                 } else if (status.includes('100%') || status === 'selesai' || status === 'lengkap') {
@@ -777,7 +804,7 @@
                     <td class="px-4 py-3">${formatIcon(row['SPTJM'])}</td>
                     <td class="px-4 py-3">${formatIcon(row['TTD PPK'])}</td>
                     <td class="px-4 py-3">${formatIcon(row['E-Materai'])}</td>
-                    <td class="px-4 py-3 whitespace-nowrap">${row.isRejected ? formatProgres('Verval Ditolak') : formatProgres(row['Status Progres'])}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${row.isRejected ? formatProgres('Verval Ditolak') : formatProgres(row['Status'])}</td>
                 `;
                 
                 tableBody.appendChild(tr);
