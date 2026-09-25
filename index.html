@@ -82,7 +82,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m15 5 4 4" />
             </svg>
         </div>
-        <p class="text-base font-bold tracking-wide animate-pulse">Menulis data...</p>
+        <p id="loaderText" class="text-base font-bold tracking-wide animate-pulse">Menulis data...</p>
     </div>
 
     <!-- Header Section -->
@@ -332,7 +332,13 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             // Mendaftarkan plugin data labels ke global Chart.js
-            Chart.register(ChartDataLabels);
+            try {
+                if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
+                    Chart.register(ChartDataLabels);
+                }
+            } catch (e) {
+                console.warn('Gagal mendaftarkan ChartDataLabels', e);
+            }
             
             loadData();
             
@@ -371,12 +377,21 @@
             emptyState.classList.add('hidden');
             emptyState.classList.remove('flex');
 
+            const loaderText = document.getElementById('loaderText');
+            if(loaderText) loaderText.innerText = 'Menulis data...';
+            
+            // Inform user if it's taking a while (Google Apps Script can be slow)
+            const slowLoadTimeout = setTimeout(() => {
+                if(loaderText) loaderText.innerText = 'Sedang mengambil data, mohon tunggu sebentar...';
+            }, 4000);
+
             fetch(scriptURL)
                 .then(response => {
                     if (!response.ok) throw new Error("Jaringan bermasalah");
                     return response.json();
                 })
                 .then(result => {
+                    clearTimeout(slowLoadTimeout);
                     loader.classList.add('hidden');
                     loader.classList.remove('flex');
                     if (result.status === 'success' && result.data) {
@@ -464,11 +479,22 @@
                             // Auto-ceklis berdasarkan status
                             if (row.isRejected || currentStatus.includes('tolak') || currentStatus === 'verval ditolak') {
                                 row['Biodata'] = 'ada';
-                            } else if (currentStatus === 'sudah ttd kepsek') {
+                            } else if (currentStatus.includes('selesai') || currentStatus.includes('lengkap') || currentStatus.includes('100%')) {
                                 row['Biodata'] = 'ada';
                                 row['PKS'] = 'ada';
                                 row['SPTJM'] = 'ada';
-                            } else if (currentStatus === 'mengisi biodata') {
+                                row['TTD PPK'] = 'ada';
+                                row['E-Materai'] = 'ada';
+                            } else if (currentStatus.includes('tte ppk') || currentStatus.includes('e-materai')) {
+                                row['Biodata'] = 'ada';
+                                row['PKS'] = 'ada';
+                                row['SPTJM'] = 'ada';
+                                row['TTD PPK'] = 'ada';
+                            } else if (currentStatus === 'sudah ttd kepsek' || currentStatus.includes('ditandatangani kepala sekolah') || currentStatus.includes('menunggu ppk')) {
+                                row['Biodata'] = 'ada';
+                                row['PKS'] = 'ada';
+                                row['SPTJM'] = 'ada';
+                            } else if (currentStatus === 'mengisi biodata' || currentStatus.includes('proses pengisian data')) {
                                 row['Biodata'] = 'ada';
                             }
 
@@ -515,6 +541,7 @@
                     }
                 })
                 .catch(error => {
+                    clearTimeout(slowLoadTimeout);
                     console.error('Error fetching data:', error);
                     loader.classList.add('hidden');
                     loader.classList.remove('flex');
@@ -860,7 +887,7 @@
             const valLower = String(value).toLowerCase().trim();
             
             // Kata kunci yang dianggap positif (Ceklis bulat)
-            if (valLower === 'ada' || valLower === 'sudah' || valLower === 'selesai' || valLower === 'ya' || valLower === 'v' || valLower === '✓' || valLower === 'true') {
+            if (valLower === 'ada' || valLower === 'sudah' || valLower === 'selesai' || valLower === 'ya' || valLower === 'v' || valLower === '✓' || valLower === 'true' || valLower.includes('sudah')) {
                 return `<div class="flex justify-center" title="${escapeHTML(value)}">
                     <svg class="w-6 h-6 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />

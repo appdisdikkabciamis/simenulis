@@ -1,4 +1,21 @@
 
+
+
+
+
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    
+
         // Ganti URL ini dengan URL Web App Apps Script Anda yang baru
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxBFvluoYF9ghU54oTzcWcBqZWvotfI67DuM-TiXjslFWUf3keiday9u38hN2YIiFrunA/exec';
         
@@ -10,13 +27,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             // Mendaftarkan plugin data labels ke global Chart.js
-            try {
-                if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
-                    Chart.register(ChartDataLabels);
-                }
-            } catch (e) {
-                console.warn('Gagal mendaftarkan ChartDataLabels', e);
-            }
+            Chart.register(ChartDataLabels);
             
             loadData();
             
@@ -148,22 +159,11 @@
                             // Auto-ceklis berdasarkan status
                             if (row.isRejected || currentStatus.includes('tolak') || currentStatus === 'verval ditolak') {
                                 row['Biodata'] = 'ada';
-                            } else if (currentStatus.includes('selesai') || currentStatus.includes('lengkap') || currentStatus.includes('100%')) {
+                            } else if (currentStatus === 'sudah ttd kepsek') {
                                 row['Biodata'] = 'ada';
                                 row['PKS'] = 'ada';
                                 row['SPTJM'] = 'ada';
-                                row['TTD PPK'] = 'ada';
-                                row['E-Materai'] = 'ada';
-                            } else if (currentStatus.includes('tte ppk') || currentStatus.includes('e-materai')) {
-                                row['Biodata'] = 'ada';
-                                row['PKS'] = 'ada';
-                                row['SPTJM'] = 'ada';
-                                row['TTD PPK'] = 'ada';
-                            } else if (currentStatus === 'sudah ttd kepsek' || currentStatus.includes('ditandatangani kepala sekolah') || currentStatus.includes('menunggu ppk')) {
-                                row['Biodata'] = 'ada';
-                                row['PKS'] = 'ada';
-                                row['SPTJM'] = 'ada';
-                            } else if (currentStatus === 'mengisi biodata' || currentStatus.includes('proses pengisian data')) {
+                            } else if (currentStatus === 'mengisi biodata') {
                                 row['Biodata'] = 'ada';
                             }
 
@@ -631,7 +631,7 @@
 
             // Setup jsPDF
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'pt', 'a4'); // Landscape
+            const doc = new jsPDF('p', 'pt', 'a4'); // Portrait
 
             // Buat icon PNG dari SVG menggunakan canvas
             const svgString = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" width="64" height="64"><path stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="m15 5 4 4" /></svg>`;
@@ -736,7 +736,15 @@
                 margin: { top: 120, right: 40, bottom: 40, left: 40 }
             });
 
-            doc.save("Daftar_Sekolah_Ditolak_Belum_Mulai.pdf");
+            const now = new Date();
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const yyyy = now.getFullYear();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            const fileName = `Daftar_Sekolah_Ditolak_Belum_Mulai_${yyyy}${mm}${dd}_${hh}${min}${ss}.pdf`;
+            doc.save(fileName);
         }
 
         // Dark Mode Toggle Logic
@@ -757,3 +765,4 @@
             document.documentElement.classList.remove('dark');
         }
     
+
