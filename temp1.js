@@ -446,15 +446,15 @@
                 tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150";
                 
                 tr.innerHTML = `
-                    <td class="px-4 py-3 font-medium text-slate-800 dark:text-slate-200 whitespace-nowrap">${escapeHTML(row['Kecamatan'] || '-')}</td>
-                    <td class="px-4 py-3 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeHTML(row['NPSN'] || '-')}</td>
-                    <td class="px-4 py-3 font-medium text-slate-800 dark:text-slate-200 leading-snug min-w-[200px]">${escapeHTML(row['Nama Sekolah'] || '-')}</td>
-                    <td class="px-4 py-3">${formatIcon(row['Biodata'])}</td>
-                    <td class="px-4 py-3">${formatIcon(row['PKS'])}</td>
-                    <td class="px-4 py-3">${formatIcon(row['SPTJM'])}</td>
-                    <td class="px-4 py-3">${formatIcon(row['TTD PPK'])}</td>
-                    <td class="px-4 py-3">${formatIcon(row['E-Materai'])}</td>
-                    <td class="px-4 py-3 whitespace-nowrap">${formatProgres(row['Status Progres'])}</td>
+                    <td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200 ">${escapeHTML(row['Kecamatan'] || '-')}</td>
+                    <td class="px-2 py-3 font-mono text-slate-500 dark:text-slate-400 ">${escapeHTML(row['NPSN'] || '-')}</td>
+                    <td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200 leading-snug min-w-[200px]">${escapeHTML(row['Nama Sekolah'] || '-')}</td>
+                    <td class="px-2 py-3">${formatIcon(row['Biodata'])}</td>
+                    <td class="px-2 py-3">${formatIcon(row['PKS'])}</td>
+                    <td class="px-2 py-3">${formatIcon(row['SPTJM'])}</td>
+                    <td class="px-2 py-3">${formatIcon(row['TTD PPK'])}</td>
+                    <td class="px-2 py-3">${formatIcon(row['E-Materai'])}</td>
+                    <td class="px-2 py-3 ">${formatProgres(row['Status Progres'])}</td>
                 `;
                 
                 tableBody.appendChild(tr);
