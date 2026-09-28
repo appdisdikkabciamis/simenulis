@@ -151,14 +151,14 @@
         </div>
 
         <!-- Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <!-- Card 1: Total Sekolah -->
         <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
             <div class="bg-blue-50 dark:bg-blue-900/40 p-3.5 rounded-xl text-blue-600 dark:text-blue-400">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v1H9V7zm5 0h1v1h-1V7zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1z" /></svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total Sekolah</p>
+                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Total Sekolah</p>
                 <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countTotal">0</h3>
             </div>
         </div>
@@ -169,19 +169,19 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Belum Mulai</p>
+                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Belum Mulai</p>
                 <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBelum">0</h3>
             </div>
         </div>
 
-        <!-- Card 3: Dalam Proses -->
+        <!-- Card: Mengisi Biodata -->
         <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-amber-50 dark:bg-amber-900/40 p-3.5 rounded-xl text-amber-600 dark:text-amber-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            <div class="bg-violet-50 dark:bg-violet-900/40 p-3.5 rounded-xl text-violet-600 dark:text-violet-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Dalam Proses</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countProses">0</h3>
+                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Mengisi Biodata</p>
+                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBiodata">0</h3>
             </div>
         </div>
 
@@ -191,8 +191,19 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Verval Ditolak</p>
+                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Verval Ditolak</p>
                 <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countDitolak">0</h3>
+            </div>
+        </div>
+
+        <!-- Card 5: Dalam Proses -->
+        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
+            <div class="bg-amber-50 dark:bg-amber-900/40 p-3.5 rounded-xl text-amber-600 dark:text-amber-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            </div>
+            <div>
+                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Dalam Proses</p>
+                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countProses">0</h3>
             </div>
         </div>
     </div>
@@ -507,8 +518,9 @@
                                 if (row.isRejected) return 1;
                                 const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                                 if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
-                                if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 4;
-                                return 3;
+                                if (rawStatus.includes('mengisi biodata')) return 3;
+                                if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 5;
+                                return 4;
                             };
                             
                             const weightA = getWeight(a);
@@ -616,8 +628,9 @@
                     if (row.isRejected) return 1;
                     const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                     if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
-                    if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 4;
-                    return 3;
+                    if (rawStatus.includes('mengisi biodata')) return 3;
+                    if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 5;
+                    return 4;
                 };
                 
                 const weightA = getWeight(a);
@@ -646,6 +659,7 @@
         function updateSummaryCards(data) {
             let total = data.length;
             let belum = 0;
+            let biodata = 0;
             let proses = 0;
             let ditolak = 0;
 
@@ -657,6 +671,8 @@
                     ditolak++;
                 } else if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-') {
                     belum++;
+                } else if (status.includes('mengisi biodata')) {
+                    biodata++;
                 } else if (status.includes('100%') || status === 'selesai' || status === 'lengkap') {
                     // Selesai
                 } else {
@@ -667,6 +683,7 @@
             // Update DOM element
             document.getElementById('countTotal').innerText = total;
             document.getElementById('countBelum').innerText = belum;
+            document.getElementById('countBiodata').innerText = biodata;
             document.getElementById('countProses').innerText = proses;
             document.getElementById('countDitolak').innerText = ditolak;
         }
