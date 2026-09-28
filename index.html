@@ -251,7 +251,7 @@
                 </div>
 
                 <!-- Download PDF Button -->
-                <button onclick="downloadPDF()" class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 w-[38px] h-[38px] rounded-lg transition-colors shadow-sm border border-slate-200 dark:border-slate-600 flex-shrink-0" title="Download Daftar Verval Ditolak & Belum Mulai">
+                <button onclick="downloadPDF()" class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 w-[38px] h-[38px] rounded-lg transition-colors shadow-sm border border-slate-200 dark:border-slate-600 flex-shrink-0" title="Download Daftar Verval Ditolak, Belum Mulai & Mengisi Biodata">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 </button>
             </div>
@@ -944,16 +944,17 @@
         }
 
         async function downloadPDF() {
-            // Filter globalData untuk "verval ditolak" dan "belum mulai"
+            // Filter globalData untuk "verval ditolak", "belum mulai", dan "mengisi biodata"
             const dataToExport = globalData.filter(row => {
                 const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                 let isDitolak = row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak';
                 let isBelum = !rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-';
-                return isDitolak || isBelum;
+                let isMengisiBiodata = rawStatus.includes('mengisi biodata');
+                return isDitolak || isBelum || isMengisiBiodata;
             });
 
             if (dataToExport.length === 0) {
-                alert('Tidak ada data sekolah dengan status Ditolak atau Belum Dimulai.');
+                alert('Tidak ada data sekolah dengan status Ditolak, Belum Dimulai, atau Mengisi Biodata.');
                 return;
             }
 
@@ -1028,7 +1029,7 @@
             doc.setFontSize(13);
             doc.setFont("helvetica", "bold");
             doc.setTextColor(0, 0, 0);
-            doc.text("Daftar Sekolah - Status Verval Ditolak & Belum Mulai", 40, 90);
+            doc.text("Daftar Sekolah - Status Verval Ditolak, Belum Mulai & Mengisi Biodata", 40, 90);
 
             // Teks Update Terakhir
             if (updateText) {
@@ -1045,6 +1046,8 @@
                 const rawStatus = String(row['Status'] || '').toLowerCase().trim();
                 if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
                     currentStatus = 'Verval Ditolak';
+                } else if (rawStatus.includes('mengisi biodata')) {
+                    currentStatus = 'Mengisi Biodata';
                 } else {
                     currentStatus = 'Belum Mulai';
                 }
@@ -1075,7 +1078,7 @@
             const hh = String(now.getHours()).padStart(2, '0');
             const min = String(now.getMinutes()).padStart(2, '0');
             const ss = String(now.getSeconds()).padStart(2, '0');
-            const fileName = `Daftar_Sekolah_Ditolak_Belum_Mulai_${yyyy}${mm}${dd}_${hh}${min}${ss}.pdf`;
+            const fileName = `Daftar_Sekolah_Ditolak_Belum_Mulai_Mengisi_Biodata_${yyyy}${mm}${dd}_${hh}${min}${ss}.pdf`;
             doc.save(fileName);
         }
 
