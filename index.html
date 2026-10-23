@@ -62,13 +62,19 @@
             background: #94a3b8;
         }
 
-        /* Hide scrollbar for video list */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        /* Video card responsive width (4 on desktop, 2 on tablet, 1 on mobile) */
+        .video-card-item {
+            width: 100%;
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+        @media (min-width: 640px) {
+            .video-card-item {
+                width: calc(50% - 0.5rem);
+            }
+        }
+        @media (min-width: 1024px) {
+            .video-card-item {
+                width: calc(25% - 0.75rem);
+            }
         }
     </style>
 </head>
@@ -86,45 +92,38 @@
     </div>
 
     <!-- Instagram Modal -->
-    <div id="igModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeIgModal()">
-        <div class="relative w-full max-w-md md:max-w-lg mx-4 transform scale-95 transition-transform duration-300 flex flex-col" onclick="event.stopPropagation()">
+    <div id="igModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/80 backdrop-blur-sm transition-opacity duration-300 opacity-0" onclick="closeIgModal()">
+        <div class="relative w-fit max-w-[92vw] sm:max-w-md md:max-w-lg mx-4 transform scale-95 transition-transform duration-300 flex flex-col items-center" onclick="event.stopPropagation()">
             <!-- Close Button Floating -->
-            <button onclick="closeIgModal()" class="absolute -top-3 -right-3 text-white bg-slate-800 hover:bg-slate-700 rounded-full p-1.5 transition-colors focus:outline-none z-20 shadow-xl border-2 border-white/50">
+            <button onclick="closeIgModal()" aria-label="Tutup Popup" class="absolute -top-3 -right-3 text-white bg-slate-800 hover:bg-slate-700 active:scale-95 rounded-full p-1.5 transition-all focus:outline-none z-30 shadow-xl border-2 border-white/60 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             
-            <!-- Thin Frame for Carousel -->
-            <div class="w-full rounded-xl bg-white dark:bg-slate-800 shadow-2xl p-2 flex flex-col group" onclick="event.stopPropagation()">
+            <!-- Frame for Carousel -->
+            <div class="w-fit max-w-full rounded-2xl bg-white dark:bg-slate-800 shadow-2xl p-2.5 sm:p-3 flex flex-col group border border-slate-100 dark:border-slate-700 transition-colors" onclick="event.stopPropagation()">
                 <!-- Carousel Container -->
-                <div class="relative overflow-hidden rounded-lg">
+                <div class="relative overflow-hidden rounded-xl bg-slate-50 dark:bg-slate-900/40 w-fit max-w-full">
                     <div id="carouselInner" class="flex transition-transform duration-500 ease-out" style="transform: translateX(0%);">
-                        <!-- Slide 1 -->
-                        <div class="w-full flex-shrink-0 flex justify-center">
-                            <img src="1.jpg" alt="Informasi 1" class="w-full h-auto object-contain max-h-[80vh]">
-                        </div>
-                        <!-- Slide 2 -->
-                        <div class="w-full flex-shrink-0 flex justify-center">
-                            <img src="2.jpg" alt="Informasi 2" class="w-full h-auto object-contain max-h-[80vh]">
-                        </div>
+                        <!-- Slide items dynamically rendered from sheet 'ig' -->
                     </div>
                     
                     <!-- Navigation Arrows -->
-                    <button onclick="prevSlide(event)" class="absolute top-1/2 -translate-y-1/2 left-3 bg-white/70 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover:opacity-100 focus:outline-none z-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    <button id="carouselPrevBtn" onclick="prevSlide(event)" aria-label="Sebelumnya" class="absolute top-[40%] -translate-y-1/2 left-2.5 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:outline-none z-20 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
-                    <button onclick="nextSlide(event)" class="absolute top-1/2 -translate-y-1/2 right-3 bg-white/70 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover:opacity-100 focus:outline-none z-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    <button id="carouselNextBtn" onclick="nextSlide(event)" aria-label="Berikutnya" class="absolute top-[40%] -translate-y-1/2 right-2.5 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 focus:outline-none z-20 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
                         </svg>
                     </button>
                 </div>
                 
                 <!-- Dots Indicators -->
-                <div id="carouselDots" class="flex justify-center space-x-2 mt-3 mb-1 z-10">
+                <div id="carouselDots" class="flex justify-center space-x-2 mt-2.5 mb-0.5 z-10">
                     <!-- Dots Generated by JS -->
                 </div>
             </div>
@@ -166,12 +165,12 @@
 
     <!-- Video Preview Section -->
     <div id="videoContainer" class="hidden mb-6">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 md:p-6 lg:p-8 flex flex-col gap-6 transition-colors">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 sm:p-5 flex flex-col gap-3 transition-colors">
             <div class="flex flex-col">
-                <h2 class="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Video Panduan</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Panduan dan informasi pelaksanaan bantuan pemerintah sarana keterampilan menulis.</p>
+                <h2 class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100">Video Panduan</h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">Panduan dan informasi pelaksanaan bantuan pemerintah sarana keterampilan menulis.</p>
             </div>
-            <div id="videoList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div id="videoList" class="flex flex-wrap justify-center gap-3.5 sm:gap-4 max-w-6xl mx-auto w-full">
                 <!-- Videos will be injected here -->
             </div>
         </div>
@@ -184,7 +183,7 @@
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div class="flex flex-col">
                 <h2 class="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Statistik & Data Progres</h2>
-                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Ringkasan status progress administrasi dan pelaporan di aplikasi simenulis</p>
+                <p id="sectionSubtitle" class="text-sm text-slate-500 dark:text-slate-400 mt-1">Ringkasan status progress administrasi dan pelaporan di aplikasi simenulis</p>
             </div>
             
             <!-- Update Info (Right Aligned) -->
@@ -196,68 +195,200 @@
             </div>
         </div>
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- Card 1: Total Sekolah -->
-        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-blue-50 dark:bg-blue-900/40 p-3.5 rounded-xl text-blue-600 dark:text-blue-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v1H9V7zm5 0h1v1h-1V7zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1z" /></svg>
-            </div>
-            <div>
-                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Total Sekolah</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countTotal">0</h3>
-            </div>
-        </div>
-
-        <!-- Card 2: Belum Mulai -->
-        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-slate-200 dark:bg-slate-800 p-3.5 rounded-xl text-slate-600 dark:text-slate-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <div>
-                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Belum Mulai</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBelum">0</h3>
+        <!-- Navigation Tabs -->
+        <div class="border-b border-slate-200 dark:border-slate-700/80 -mt-2 pb-3">
+            <div class="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100/90 dark:bg-slate-700/50 rounded-2xl w-fit border border-slate-200/60 dark:border-slate-600/40">
+                <button id="tabBtnPengisian" onclick="switchTab('pengisian')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-all duration-200 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Pengisian Data Bantuan</span>
+                </button>
+                <button id="tabBtnSalur" onclick="switchTab('salur')" class="flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-[#0e3f82] text-white shadow-sm cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                    <span>Laporan Penerimaan Bantuan</span>
+                </button>
             </div>
         </div>
 
-        <!-- Card: Mengisi Biodata -->
-        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-violet-50 dark:bg-violet-900/40 p-3.5 rounded-xl text-violet-600 dark:text-violet-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+        <!-- Summary Cards Tab 1: Pengisian Data Bantuan -->
+        <div id="cardsPengisian" class="hidden flex flex-col gap-3 sm:gap-4">
+            <!-- Baris 1: 2 Card Status Umum -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <!-- Card 1: Total Sekolah -->
+                <div id="cardPengisian_total" onclick="selectChartMetric('total')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Total Sekolah per Kecamatan">
+                    <div class="bg-blue-50 dark:bg-blue-900/40 p-3 sm:p-3.5 rounded-xl text-blue-600 dark:text-blue-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v1H9V7zm5 0h1v1h-1V7zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Total Sekolah</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countTotal">0</h3>
+                    </div>
+                </div>
+
+                <!-- Card 2: Belum Mulai -->
+                <div id="cardPengisian_belum" onclick="selectChartMetric('belum')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-slate-300 dark:hover:border-slate-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Belum Mulai per Kecamatan">
+                    <div class="bg-slate-200 dark:bg-slate-800 p-3 sm:p-3.5 rounded-xl text-slate-600 dark:text-slate-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Belum Mulai</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBelum">0</h3>
+                    </div>
+                </div>
             </div>
-            <div>
-                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Mengisi Biodata</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBiodata">0</h3>
+
+            <!-- Baris 2: 4 Card Status Progres Alur Kerja -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <!-- Card 4: Tahap Mengisi Biodata -->
+                <div id="cardPengisian_biodata" onclick="selectChartMetric('biodata')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-violet-300 dark:hover:border-violet-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Mengisi Biodata per Kecamatan">
+                    <div class="bg-violet-50 dark:bg-violet-900/40 p-3 sm:p-3.5 rounded-xl text-violet-600 dark:text-violet-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Tahap Mengisi Biodata</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countBiodata">0</h3>
+                    </div>
+                </div>
+
+                <!-- Card 5: Tahap TTD Kepsek -->
+                <div id="cardPengisian_ttdKepsek" onclick="selectChartMetric('ttdKepsek')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-amber-300 dark:hover:border-amber-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Tahap TTD Kepsek per Kecamatan">
+                    <div class="bg-amber-50 dark:bg-amber-900/40 p-3 sm:p-3.5 rounded-xl text-amber-600 dark:text-amber-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Tahap TTD Kepsek</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countTtdKepsek">0</h3>
+                    </div>
+                </div>
+
+                <!-- Card 6: Tahap TTD PPK -->
+                <div id="cardPengisian_ttdPpk" onclick="selectChartMetric('ttdPpk')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Tahap TTD PPK per Kecamatan">
+                    <div class="bg-indigo-50 dark:bg-indigo-900/40 p-3 sm:p-3.5 rounded-xl text-indigo-600 dark:text-indigo-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Tahap TTD PPK</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countTtdPpk">0</h3>
+                    </div>
+                </div>
+
+                <!-- Card 7: Lengkap -->
+                <div id="cardPengisian_lengkap" onclick="selectChartMetric('lengkap')" class="pengisian-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Lengkap 100% per Kecamatan">
+                    <div class="bg-emerald-50 dark:bg-emerald-900/40 p-3 sm:p-3.5 rounded-xl text-emerald-600 dark:text-emerald-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Lengkap</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countLengkap">0</h3>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Card 4: Verval Ditolak -->
-        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-red-50 dark:bg-red-900/40 p-3.5 rounded-xl text-red-600 dark:text-red-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            <div>
-                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Verval Ditolak</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countDitolak">0</h3>
-            </div>
-        </div>
+        <!-- Summary Cards Tab 2: Laporan Penerimaan Bantuan (Sheet Salur) -->
+        <div id="cardsSalur" class="flex flex-col gap-3 sm:gap-4">
+            <!-- Baris 1: 2 Card Ringkasan Penyaluran -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <!-- Card 1: Total Sekolah (Master Sasaran) -->
+                <div id="cardSalur_total" onclick="selectChartMetric('total')" class="salur-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Total Sekolah Sasaran per Kecamatan">
+                    <div class="bg-blue-50 dark:bg-blue-900/40 p-3 sm:p-3.5 rounded-xl text-blue-600 dark:text-blue-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v1H9V7zm5 0h1v1h-1V7zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1z" /></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Total Sekolah</p>
+                        <div class="flex items-baseline gap-1.5 mt-0.5">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countSalurTotal">0</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Sekolah</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 whitespace-nowrap">
+                            Target: <span class="font-bold text-blue-600 dark:text-blue-400">Seluruh Sasaran</span>
+                        </p>
+                    </div>
+                </div>
 
-        <!-- Card 5: Dalam Proses -->
-        <div class="bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 flex items-center gap-4 transition-colors">
-            <div class="bg-amber-50 dark:bg-amber-900/40 p-3.5 rounded-xl text-amber-600 dark:text-amber-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                <!-- Card 2: Belum Terima Dana (Tonjolkan Belum Terima Dana, Sub info Sudah Terima Dana) -->
+                <div id="cardSalur_salur" onclick="selectChartMetric('salur')" class="salur-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Progres Sudah Terima Dana per Kecamatan">
+                    <div class="bg-amber-50 dark:bg-amber-900/40 p-3 sm:p-3.5 rounded-xl text-amber-500 dark:text-amber-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Belum Terima Dana</p>
+                        <div class="flex items-baseline gap-1.5 mt-0.5">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countSalurBelum">0</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Sekolah</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 whitespace-nowrap">
+                            Sudah Terima Dana: <span class="font-bold text-emerald-600 dark:text-emerald-400"><span id="countSalurSudah">0</span> Sekolah</span>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <p class="text-[11px] xl:text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">Dalam Proses</p>
-                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100" id="countProses">0</h3>
+
+            <!-- Baris 2: 3 Card Pelaporan Bantuan (Dana Diterima, BAST, LPJ) - Tonjolkan yang Belum Lapor -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+                <!-- Card 3: Belum Lapor Dana Diterima -->
+                <div id="cardSalur_dana" onclick="selectChartMetric('dana')" class="salur-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-sky-300 dark:hover:border-sky-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Progres Lapor Dana Diterima per Kecamatan">
+                    <div class="bg-red-50 dark:bg-red-900/40 p-3 sm:p-3.5 rounded-xl text-red-500 dark:text-red-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 truncate" title="Belum Lapor Dana Diterima">Belum Lapor Dana Diterima</p>
+                        <div class="flex items-baseline gap-1.5 mt-0.5">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countSalurDanaBelum">0</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Sekolah</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 whitespace-nowrap">
+                            Sudah Lapor: <span class="font-bold text-emerald-600 dark:text-emerald-400"><span id="countSalurDanaSudah">0</span> Sekolah</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Belum Lapor BAST -->
+                <div id="cardSalur_bast" onclick="selectChartMetric('bast')" class="salur-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-amber-300 dark:hover:border-amber-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Progres Lapor BAST per Kecamatan">
+                    <div class="bg-amber-50 dark:bg-amber-900/40 p-3 sm:p-3.5 rounded-xl text-amber-500 dark:text-amber-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 truncate" title="Belum Lapor BAST">Belum Lapor BAST</p>
+                        <div class="flex items-baseline gap-1.5 mt-0.5">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countSalurBastBelum">0</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Sekolah</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 whitespace-nowrap">
+                            Sudah Lapor: <span class="font-bold text-emerald-600 dark:text-emerald-400"><span id="countSalurBastSudah">0</span> Sekolah</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Belum Lapor Pertanggungjawaban -->
+                <div id="cardSalur_lpj" onclick="selectChartMetric('lpj')" class="salur-metric-card bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-4 sm:p-5 flex items-center gap-3.5 sm:gap-4 transition-all cursor-pointer hover:border-purple-300 dark:hover:border-purple-500 hover:shadow-sm" title="Klik untuk menampilkan grafik Progres Lapor LPJ per Kecamatan">
+                    <div class="bg-purple-50 dark:bg-purple-900/40 p-3 sm:p-3.5 rounded-xl text-purple-500 dark:text-purple-400 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 truncate" title="Belum Lapor Pertanggungjawaban">Belum Lapor Pertanggungjawaban</p>
+                        <div class="flex items-baseline gap-1.5 mt-0.5">
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100" id="countSalurLpjBelum">0</h3>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Sekolah</span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 whitespace-nowrap">
+                            Sudah Lapor: <span class="font-bold text-emerald-600 dark:text-emerald-400"><span id="countSalurLpjSudah">0</span> Sekolah</span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- Chart Section -->
     <div id="chartContainer" class="hidden bg-slate-50 dark:bg-slate-700/30 border border-slate-100 dark:border-slate-600/50 rounded-xl p-5 md:p-6 transition-colors">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100">Progres per Kecamatan</h2>
+        <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+            <div class="min-w-0">
+                <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100" id="chartTitle">Progres Penerimaan Dana per Kecamatan</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="chartSubtitle">Menampilkan progres berdasarkan kartu yang dipilih di atas</p>
+            </div>
         </div>
         <div class="relative h-48 md:h-64 w-full">
             <canvas id="kecamatanChart"></canvas>
@@ -295,8 +426,10 @@
                 <select id="filterStatus" onchange="applyFilters()" class="w-full sm:w-auto border border-slate-200 dark:border-slate-600 rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:border-blue-500 transition-colors cursor-pointer">
                     <option value="">Semua Status</option>
                     <option value="belum mulai">Belum Mulai</option>
-                    <option value="sudah ttd kepsek">Sudah TTD Kepsek</option>
-                    <option value="mengisi biodata">Mengisi Biodata</option>
+                    <option value="tahap mengisi biodata">Tahap Mengisi Biodata</option>
+                    <option value="tahap ttd kepsek">Tahap TTD Kepsek</option>
+                    <option value="tahap ttd ppk">Tahap TTD PPK</option>
+                    <option value="lengkap">Lengkap</option>
                     <option value="verval ditolak">Verval Ditolak</option>
                 </select>
 
@@ -308,7 +441,7 @@
                 </div>
 
                 <!-- Download PDF Button -->
-                <button onclick="downloadPDF()" class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 w-[38px] h-[38px] rounded-lg transition-colors shadow-sm border border-slate-200 dark:border-slate-600 flex-shrink-0" title="Download Daftar Verval Ditolak, Belum Mulai & Mengisi Biodata">
+                <button id="downloadPdfBtn" onclick="downloadPDF()" class="flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 w-[38px] h-[38px] rounded-lg transition-colors shadow-sm border border-slate-200 dark:border-slate-600 flex-shrink-0" title="Download Daftar Verval Ditolak, Belum Mulai & Tahap Mengisi Biodata">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                 </button>
             </div>
@@ -318,16 +451,15 @@
         <!-- Table Container -->
         <div class="table-scroll overflow-x-auto relative flex-1 bg-white dark:bg-slate-800 transition-colors">
             <table class="w-full text-left border-collapse">
-                <thead>
+                <thead id="tableHead">
                     <tr class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 text-xs uppercase tracking-wider sticky top-0 z-10">
                         <th class="px-2 py-3 font-semibold">Kecamatan</th>
                         <th class="px-2 py-3 font-semibold">NPSN</th>
                         <th class="px-2 py-3 font-semibold">Nama Sekolah</th>
-                        <th class="px-2 py-3 font-semibold text-center">Biodata</th>
-                        <th class="px-2 py-3 font-semibold text-center">PKS</th>
-                        <th class="px-2 py-3 font-semibold text-center">SPTJM</th>
-                        <th class="px-2 py-3 font-semibold text-center">TTD PPK</th>
-                        <th class="px-2 py-3 font-semibold text-center">E-Materai</th>
+                        <th class="px-2 py-3 font-semibold text-center">Dana Diterima</th>
+                        <th class="px-2 py-3 font-semibold text-center">Lapor Dana Diterima</th>
+                        <th class="px-2 py-3 font-semibold text-center">Lapor BAST</th>
+                        <th class="px-2 py-3 font-semibold text-center">Lapor LPJ</th>
                         <th class="px-2 py-3 font-semibold">Status</th>
                     </tr>
                 </thead>
@@ -381,6 +513,15 @@
         // Ganti URL ini dengan URL Web App Apps Script Anda yang baru
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxBFvluoYF9ghU54oTzcWcBqZWvotfI67DuM-TiXjslFWUf3keiday9u38hN2YIiFrunA/exec';
         
+        let currentTab = 'salur'; // Default saat pertama kali halaman dibuka ke salur
+        let activeChartMetricSalur = 'salur'; // Default grafik tab salur: 'salur'
+        let activeChartMetricPengisian = 'proses'; // Default grafik tab pengisian: 'proses'
+        let dataPengisian = [];
+        let headersPengisian = [];
+        let dataSalur = [];
+        let headersSalur = [];
+        let hasFetchedSalurFallback = false;
+
         let globalData = [];
         let filteredData = [];
         let currentPage = 1;
@@ -397,21 +538,133 @@
                 console.warn('Gagal mendaftarkan ChartDataLabels', e);
             }
             
+            updateActiveCardStyles();
             loadData();
             
             // Search & Filter event listeners
             document.getElementById('searchInput').addEventListener('input', applyFilters);
-
-            // Initialize carousel dots
-            initCarousel();
-
-            // Tampilkan Modal IG saat pertama kali dibuka
-            setTimeout(openIgModal, 1000);
         });
+
+        function formatImageUrl(url) {
+            if (!url) return '';
+            url = String(url).trim();
+            // Konversi link share/view Google Drive menjadi thumbnail direct viewable
+            if (url.includes('drive.google.com')) {
+                const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+                if (idMatch && idMatch[1]) {
+                    return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1200`;
+                }
+            }
+            return url;
+        }
+
+        function renderIgPopup(items) {
+            const carouselInner = document.getElementById('carouselInner');
+            const prevBtn = document.getElementById('carouselPrevBtn');
+            const nextBtn = document.getElementById('carouselNextBtn');
+            const dotsContainer = document.getElementById('carouselDots');
+            if (!carouselInner) return;
+
+            if (!items || items.length === 0) {
+                carouselInner.innerHTML = '';
+                if (dotsContainer) dotsContainer.innerHTML = '';
+                return;
+            }
+
+            carouselInner.innerHTML = '';
+            currentSlide = 0;
+
+            items.forEach(item => {
+                const slide = document.createElement('div');
+                slide.className = 'w-full flex-shrink-0 flex flex-col items-center select-none px-0.5';
+
+                const rawImg = item.gambar || item.url || '';
+                const imgUrl = formatImageUrl(rawImg);
+                const link = item.link ? String(item.link).trim() : '';
+
+                // Gambar popup
+                let imgHtml = '';
+                if (imgUrl) {
+                    if (link) {
+                        imgHtml = `
+                            <a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-xl group/img" title="Buka di Instagram">
+                                <img src="${escapeHTML(imgUrl)}" alt="Informasi Instagram" class="ig-popup-img w-auto h-auto max-w-full max-h-[58vh] sm:max-h-[64vh] object-contain rounded-xl block mx-auto transition-transform duration-300 group-hover/img:scale-[1.01]" loading="lazy">
+                            </a>
+                        `;
+                    } else {
+                        imgHtml = `
+                            <div class="overflow-hidden rounded-xl">
+                                <img src="${escapeHTML(imgUrl)}" alt="Informasi" class="ig-popup-img w-auto h-auto max-w-full max-h-[58vh] sm:max-h-[64vh] object-contain rounded-xl block mx-auto" loading="lazy">
+                            </div>
+                        `;
+                    }
+                }
+
+                // Link Instagram di bawah gambar (disamakan selebar ukuran gambar)
+                let btnHtml = '';
+                if (link) {
+                    btnHtml = `
+                        <div class="ig-btn-wrap w-full pt-2.5 pb-0.5 flex justify-center">
+                            <a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-95 text-white font-semibold text-sm rounded-xl shadow-md transition-all duration-200 hover:shadow-lg active:scale-[0.98]">
+                                <svg class="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                                <span>Buka di Instagram</span>
+                                <svg class="w-4 h-4 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    `;
+                }
+
+                slide.innerHTML = `
+                    <div class="inline-flex flex-col items-center max-w-full mx-auto">
+                        ${imgHtml}
+                        ${btnHtml}
+                    </div>
+                `;
+
+                // Sinkronisasi lebar tombol agar tepat sama dengan lebar gambar
+                const imgEl = slide.querySelector('.ig-popup-img');
+                const btnWrap = slide.querySelector('.ig-btn-wrap');
+                if (imgEl && btnWrap) {
+                    const syncWidth = () => {
+                        if (imgEl.clientWidth > 0) {
+                            btnWrap.style.width = `${imgEl.clientWidth}px`;
+                        }
+                    };
+                    if (imgEl.complete && imgEl.naturalWidth > 0) {
+                        syncWidth();
+                    } else {
+                        imgEl.addEventListener('load', syncWidth);
+                    }
+                    if (window.ResizeObserver) {
+                        const ro = new ResizeObserver(syncWidth);
+                        ro.observe(imgEl);
+                    }
+                }
+
+                carouselInner.appendChild(slide);
+            });
+
+            // Tampilkan navigasi hanya jika lebih dari 1 slide
+            if (items.length <= 1) {
+                if (prevBtn) prevBtn.classList.add('hidden');
+                if (nextBtn) nextBtn.classList.add('hidden');
+                if (dotsContainer) dotsContainer.classList.add('hidden');
+            } else {
+                if (prevBtn) prevBtn.classList.remove('hidden');
+                if (nextBtn) nextBtn.classList.remove('hidden');
+                if (dotsContainer) dotsContainer.classList.remove('hidden');
+            }
+
+            initCarousel();
+            updateCarousel();
+        }
 
         function openIgModal() {
             const modal = document.getElementById('igModal');
-            if(modal) {
+            const carouselInner = document.getElementById('carouselInner');
+            if(modal && carouselInner && carouselInner.children.length > 0) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 setTimeout(() => {
@@ -455,18 +708,21 @@
             if (!carouselInner || !dotsContainer) return;
 
             const totalSlides = carouselInner.children.length;
-            
             dotsContainer.innerHTML = '';
+            if (totalSlides <= 1) return;
+
             for (let i = 0; i < totalSlides; i++) {
                 const btn = document.createElement('button');
                 btn.onclick = (e) => { e.stopPropagation(); goToSlide(i); };
-                btn.className = `carousel-dot w-2.5 h-2.5 rounded-full transition-all ${i === 0 ? 'bg-blue-600 scale-110' : 'bg-slate-300 hover:bg-slate-400 scale-90'}`;
+                btn.className = `carousel-dot w-2.5 h-2.5 rounded-full transition-all ${i === 0 ? 'bg-blue-600 scale-110' : 'bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 scale-90'}`;
                 dotsContainer.appendChild(btn);
             }
         }
 
         function startCarousel() {
-            stopCarousel(); // Clear existing interval just in case
+            stopCarousel();
+            const carouselInner = document.getElementById('carouselInner');
+            if (!carouselInner || carouselInner.children.length <= 1) return;
             carouselInterval = setInterval(() => {
                 nextSlide();
             }, 4000);
@@ -485,11 +741,11 @@
             const dots = document.querySelectorAll('.carousel-dot');
             dots.forEach((dot, index) => {
                 if (index === currentSlide) {
-                    dot.classList.remove('bg-slate-300', 'scale-90');
+                    dot.classList.remove('bg-slate-300', 'dark:bg-slate-600', 'scale-90');
                     dot.classList.add('bg-blue-600', 'scale-110');
                 } else {
                     dot.classList.remove('bg-blue-600', 'scale-110');
-                    dot.classList.add('bg-slate-300', 'scale-90');
+                    dot.classList.add('bg-slate-300', 'dark:bg-slate-600', 'scale-90');
                 }
             });
         }
@@ -503,6 +759,7 @@
             const carouselInner = document.getElementById('carouselInner');
             if (!carouselInner) return;
             const totalSlides = carouselInner.children.length;
+            if (totalSlides <= 1) return;
             currentSlide = (currentSlide + 1) % totalSlides;
             updateCarousel();
         }
@@ -516,6 +773,7 @@
             const carouselInner = document.getElementById('carouselInner');
             if (!carouselInner) return;
             const totalSlides = carouselInner.children.length;
+            if (totalSlides <= 1) return;
             currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
             updateCarousel();
         }
@@ -605,6 +863,7 @@
 
                         if (videosData.length > 0) {
                             videoList.innerHTML = '';
+                            videoList.className = 'flex flex-wrap justify-center gap-3.5 sm:gap-4 max-w-6xl mx-auto w-full';
                             
                             videosData.forEach(video => {
                                 let embedUrl = video.url.trim();
@@ -623,12 +882,12 @@
                                 }
                                 
                                 const finalUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : embedUrl;
-                                const titleHtml = video.title ? `<h3 class="mt-3 text-sm font-semibold text-slate-800 dark:text-slate-200 line-clamp-2 text-center" title="${escapeHTML(video.title)}">${escapeHTML(video.title)}</h3>` : '';
+                                const titleHtml = video.title ? `<h3 class="mt-2 text-xs font-medium text-slate-700 dark:text-slate-200 line-clamp-2 text-center" title="${escapeHTML(video.title)}">${escapeHTML(video.title)}</h3>` : '';
                                 
                                 const videoItem = document.createElement('div');
-                                videoItem.className = 'w-full flex flex-col';
+                                videoItem.className = 'video-card-item flex flex-col bg-slate-50 dark:bg-slate-700/30 p-2 sm:p-2.5 rounded-xl border border-slate-100 dark:border-slate-700/50 shadow-sm transition-all hover:shadow-md';
                                 videoItem.innerHTML = `
-                                    <div class="relative w-full overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900" style="padding-top: 56.25%;">
+                                    <div class="relative w-full overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900 shadow-inner" style="padding-top: 56.25%;">
                                         <iframe class="absolute top-0 left-0 w-full h-full pointer-events-auto" src="${finalUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </div>
                                     ${titleHtml}
@@ -642,82 +901,35 @@
                             videoList.innerHTML = '';
                         }
 
-                        globalData = result.data.map(row => {
-                            let currentStatus = '';
-                            if (row['Status']) {
-                                const s = String(row['Status']).toLowerCase().trim();
-                                if (s.includes('ditandatangani kepala sekolah')) {
-                                    row['Status'] = 'Sudah TTD Kepsek';
-                                    currentStatus = 'sudah ttd kepsek';
-                                } else if (s.includes('proses pengisian data')) {
-                                    row['Status'] = 'Mengisi Biodata';
-                                    currentStatus = 'mengisi biodata';
-                                } else {
-                                    currentStatus = s;
-                                }
-                            }
-                            
-                            // Auto-ceklis berdasarkan status
-                            if (row.isRejected || currentStatus.includes('tolak') || currentStatus === 'verval ditolak') {
-                                row['Biodata'] = 'ada';
-                            } else if (currentStatus.includes('selesai') || currentStatus.includes('lengkap') || currentStatus.includes('100%')) {
-                                row['Biodata'] = 'ada';
-                                row['PKS'] = 'ada';
-                                row['SPTJM'] = 'ada';
-                                row['TTD PPK'] = 'ada';
-                                row['E-Materai'] = 'ada';
-                            } else if (currentStatus.includes('tte ppk') || currentStatus.includes('e-materai')) {
-                                row['Biodata'] = 'ada';
-                                row['PKS'] = 'ada';
-                                row['SPTJM'] = 'ada';
-                                row['TTD PPK'] = 'ada';
-                            } else if (currentStatus === 'sudah ttd kepsek' || currentStatus.includes('ditandatangani kepala sekolah') || currentStatus.includes('menunggu ppk')) {
-                                row['Biodata'] = 'ada';
-                                row['PKS'] = 'ada';
-                                row['SPTJM'] = 'ada';
-                            } else if (currentStatus === 'mengisi biodata' || currentStatus.includes('proses pengisian data')) {
-                                row['Biodata'] = 'ada';
-                            }
+                        // Simpan headers dari server jika tersedia
+                        headersPengisian = Array.isArray(result.headers) && result.headers.length > 0 ? result.headers : [];
+                        headersSalur = Array.isArray(result.salurHeaders) && result.salurHeaders.length > 0 ? result.salurHeaders : [];
 
-                            return row;
-                        });
-                        
-                        // Urutkan data berdasarkan status prioritas, lalu Kecamatan
-                        globalData.sort((a, b) => {
-                            const getWeight = (row) => {
-                                if (row.isRejected) return 1;
-                                const rawStatus = String(row['Status'] || '').toLowerCase().trim();
-                                if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
-                                if (rawStatus.includes('mengisi biodata')) return 3;
-                                if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 5;
-                                return 4;
-                            };
-                            
-                            const weightA = getWeight(a);
-                            const weightB = getWeight(b);
-                            
-                            if (weightA !== weightB) {
-                                return weightA - weightB;
-                            }
-                            
-                            // Jika status sama, urutkan berdasarkan kecamatan A-Z
-                            const kecA = String(a['Kecamatan'] || '').toLowerCase();
-                            const kecB = String(b['Kecamatan'] || '').toLowerCase();
-                            if (kecA < kecB) return -1;
-                            if (kecA > kecB) return 1;
-                            return 0;
-                        });
+                        // Simpan raw data salur jika ada
+                        rawSalurData = (result.salur !== undefined && Array.isArray(result.salur)) ? result.salur : [];
 
-                        // Populate dropdown filter Kecamatan secara dinamis
-                        populateKecamatanFilter();
+                        // Proses dan normalisasi data Pengisian Data Bantuan
+                        dataPengisian = normalizeData(result.data, false);
+                        sortData(dataPengisian, false);
 
-                        filteredData = [...globalData];
-                        currentPage = 1;
-                        
-                        // Tampilkan komponen dinamis
-                        updateSummaryCards(filteredData);
-                        renderChart(filteredData); // Gambar grafik bar
-                        renderTable();
+                        // Proses dan bangun data Salur lengkap dari gabungan master Sheet 1 dan Sheet Salur
+                        dataSalur = buildSalurData(result.data, rawSalurData);
+                        sortData(dataSalur, true);
+                        if (rawSalurData.length > 0) {
+                            hasFetchedSalurFallback = true;
+                        }
+
+                        // Tampilkan tab yang aktif saat ini (default: pengisian/salur)
+                        switchTab(currentTab);
+
+                        // Tampilkan Popup IG setelah loading dan halaman selesai dirender jika data tersedia
+                        const igData = result.ig || result.igPopups;
+                        if (Array.isArray(igData) && igData.length > 0) {
+                            renderIgPopup(igData);
+                            setTimeout(openIgModal, 400);
+                        } else {
+                            closeIgModal();
+                        }
                     } else {
                         throw new Error(result.message || "Data format tidak valid");
                     }
@@ -732,13 +944,453 @@
                 });
         }
 
+        function getRowValue(row, targetCol) {
+            if (!row) return '';
+            if (row[targetCol] !== undefined && row[targetCol] !== null && String(row[targetCol]).trim() !== '') {
+                return row[targetCol];
+            }
+            const targetClean = targetCol.toLowerCase().replace(/[^a-z0-9]/g, '');
+            for (const key of Object.keys(row)) {
+                const keyClean = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (keyClean === targetClean && row[key] !== undefined && row[key] !== null) {
+                    return row[key];
+                }
+            }
+            // Dukungan alias nama kolom pelaporan bantuan
+            if (targetClean === 'lapordanaditerima' || targetClean === 'lapordana') {
+                return row['Lapor Dana Diterima'] || row['Dana Diterima'] || row['Dana'] || '';
+            }
+            if (targetClean === 'danaditerima' || targetClean === 'dana') {
+                return row['Dana Diterima'] || row['Dana'] || '';
+            }
+            if (targetClean === 'laporbast' || targetClean === 'bast') {
+                return getRowValue(row, 'BAST');
+            }
+            if (targetClean === 'laporlpj' || targetClean === 'laporpertanggungjawaban' || targetClean === 'lpj' || targetClean === 'pertanggungjawaban') {
+                return getRowValue(row, 'LPJ') || getRowValue(row, 'Pertanggungjawaban');
+            }
+            return '';
+        }
+
+        let rawSalurData = [];
+
+        function buildSalurData(pengisianRows, salurRows) {
+            const pRows = Array.isArray(pengisianRows) ? pengisianRows : [];
+            const sRows = Array.isArray(salurRows) ? salurRows : [];
+
+            // Peta pencarian data sheet salur HANYA berdasarkan NPSN
+            const salurNpsnMap = new Map();
+            sRows.forEach(row => {
+                const npsn = String(row.NPSN || getRowValue(row, 'NPSN') || '').trim();
+                if (npsn) {
+                    salurNpsnMap.set(npsn, row);
+                }
+            });
+
+            const merged = [];
+            const processedNpsn = new Set();
+
+            // 1. Ambil seluruh sekolah sasaran dari Sheet 1 (Pengisian Data Bantuan)
+            pRows.forEach(pRow => {
+                const npsn = String(pRow.NPSN || getRowValue(pRow, 'NPSN') || '').trim();
+                if (npsn) processedNpsn.add(npsn);
+
+                // Cocokkan HANYA berdasarkan NPSN ke sheet salur
+                const sRow = npsn ? salurNpsnMap.get(npsn) : null;
+                const rowCopy = { ...pRow };
+
+                if (sRow) {
+                    // Ditemukan di sheet salur berdasarkan NPSN -> Dana Diterima = Sudah
+                    rowCopy.inSalur = true;
+                    rowCopy['Dana Diterima'] = 'Sudah';
+                    const rawLapor = getRowValue(sRow, 'Lapor Dana Diterima') || getRowValue(sRow, 'Dana Diterima') || getRowValue(sRow, 'Dana');
+                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().trim() === 'sudah';
+                    rowCopy['Lapor Dana Diterima'] = isLaporSudah ? 'Sudah' : 'Belum';
+                    rowCopy['Tgl Dana Diterima'] = getRowValue(sRow, 'Tgl Dana Diterima') || getRowValue(sRow, 'Tanggal') || '';
+                    const rawBast = getRowValue(sRow, 'BAST');
+                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    const rawLpj = getRowValue(sRow, 'LPJ') || getRowValue(sRow, 'Pertanggungjawaban');
+                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['Bentuk'] = getRowValue(sRow, 'Bentuk') || getRowValue(pRow, 'Bentuk') || 'Negeri';
+                    if (sRow.isRejected) rowCopy.isRejected = true;
+                } else {
+                    // TIDAK ada di sheet salur berdasarkan NPSN -> Dana Diterima = Belum
+                    rowCopy.inSalur = false;
+                    rowCopy['Dana Diterima'] = 'Belum';
+                    rowCopy['Lapor Dana Diterima'] = 'Belum';
+                    rowCopy['Tgl Dana Diterima'] = '-';
+                    rowCopy['BAST'] = 'Belum';
+                    rowCopy['LPJ'] = 'Belum';
+                    rowCopy['Bentuk'] = getRowValue(pRow, 'Bentuk') || 'Negeri';
+                }
+
+                // Bersihkan status dari sheet 1 agar status salur dihitung berdasarkan pelaporan dana/BAST/LPJ
+                rowCopy['Status'] = (sRow && sRow['Status']) ? sRow['Status'] : '';
+                rowCopy['Status'] = getDerivedSalurStatus(rowCopy);
+                merged.push(rowCopy);
+            });
+
+            // 2. Jika ada sekolah di sheet salur yang NPSN-nya belum ada di sheet 1, sertakan juga
+            sRows.forEach(sRow => {
+                const npsn = String(sRow.NPSN || getRowValue(sRow, 'NPSN') || '').trim();
+                if (npsn && !processedNpsn.has(npsn)) {
+                    const rowCopy = { ...sRow };
+                    rowCopy.inSalur = true;
+                    rowCopy['Dana Diterima'] = 'Sudah';
+                    const rawLapor = getRowValue(sRow, 'Lapor Dana Diterima') || getRowValue(sRow, 'Dana Diterima') || getRowValue(sRow, 'Dana');
+                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().trim() === 'sudah';
+                    rowCopy['Lapor Dana Diterima'] = isLaporSudah ? 'Sudah' : 'Belum';
+                    const rawBast = getRowValue(sRow, 'BAST');
+                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    const rawLpj = getRowValue(sRow, 'LPJ') || getRowValue(sRow, 'Pertanggungjawaban');
+                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['Status'] = getDerivedSalurStatus(rowCopy);
+                    merged.push(rowCopy);
+                }
+            });
+
+            return merged;
+        }
+
+        function getDerivedSalurStatus(row) {
+            if (row.isRejected) return 'Verval Ditolak';
+
+            const hasReceivedDana = !!row.inSalur || String(getRowValue(row, 'Dana Diterima') || '').toLowerCase().trim() === 'sudah';
+            if (!hasReceivedDana) {
+                return 'Belum Terima Dana';
+            }
+            
+            const lpj = String(getRowValue(row, 'LPJ') || getRowValue(row, 'Pertanggungjawaban')).toLowerCase().trim();
+            const bast = String(getRowValue(row, 'BAST')).toLowerCase().trim();
+            const laporDana = String(getRowValue(row, 'Lapor Dana Diterima') || getRowValue(row, 'Dana')).toLowerCase().trim();
+            
+            const isLpjDone = lpj === 'ada' || lpj === 'sudah' || lpj.includes('sudah') || lpj === 'selesai' || lpj === 'lengkap' || lpj === 'ya' || lpj === 'v' || lpj === '✓' || lpj === 'true' || lpj === '1';
+            const isBastDone = bast === 'ada' || bast === 'sudah' || bast.includes('sudah') || bast === 'selesai' || bast === 'lengkap' || bast === 'ya' || bast === 'v' || bast === '✓' || bast === 'true' || bast === '1';
+            const isDanaDone = laporDana === 'ada' || laporDana === 'sudah' || laporDana.includes('sudah') || laporDana === 'selesai' || laporDana === 'ya' || laporDana === 'v' || laporDana === '✓' || laporDana === 'true' || laporDana === '1';
+            
+            if (isLpjDone) {
+                return 'Lengkap';
+            } else if (isBastDone || isDanaDone) {
+                return 'Sedang Proses';
+            } else {
+                return 'Belum Lapor Dana';
+            }
+        }
+
+        function formatBentuk(val) {
+            if (!val || String(val).trim() === '' || String(val).trim() === '-') return '<span class="text-slate-400 font-bold">-</span>';
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800/60">${escapeHTML(val)}</span>`;
+        }
+
+        // Format isian Sudah / Belum dengan tampilan badge berwarna
+        function formatStatusSudahBelum(val) {
+            if (val === undefined || val === null || String(val).trim() === '' || String(val).trim() === '-') {
+                return `<div class="flex justify-center"><span class="text-slate-400 font-bold">-</span></div>`;
+            }
+            const str = String(val).trim();
+            const strLower = str.toLowerCase();
+            if (strLower === 'sudah' || strLower === 'ada' || strLower === 'ya' || strLower === 'v' || strLower === '✓' || strLower === 'true' || strLower.includes('sudah')) {
+                return `<div class="flex justify-center"><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"><svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>Sudah</span></div>`;
+            }
+            if (strLower === 'belum' || strLower === 'belum ada' || strLower === 'tidak' || strLower === 'tidak ada' || strLower === 'false') {
+                return `<div class="flex justify-center"><span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300 border border-rose-200 dark:border-rose-800"><svg class="w-3.5 h-3.5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>Belum</span></div>`;
+            }
+            const numClean = str.replace(/[^0-9]/g, '');
+            if (numClean && numClean.length >= 4) {
+                const num = parseInt(numClean, 10);
+                return `<div class="flex justify-center"><span class="font-semibold text-xs text-emerald-600 dark:text-emerald-400 whitespace-nowrap">Rp ${num.toLocaleString('id-ID')}</span></div>`;
+            }
+            return `<div class="flex justify-center"><span class="font-medium text-xs text-slate-700 dark:text-slate-300">${escapeHTML(str)}</span></div>`;
+        }
+
+        function formatDana(val) {
+            return formatStatusSudahBelum(val);
+        }
+
+        function formatTgl(val) {
+            if (!val || String(val).trim() === '' || String(val).trim() === '-') {
+                return `<div class="flex justify-center"><span class="text-slate-400 font-bold">-</span></div>`;
+            }
+            const str = String(val).trim();
+            try {
+                const d = new Date(str);
+                if (!isNaN(d.getTime()) && d.getFullYear() > 2000) {
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                    const mon = months[d.getMonth()];
+                    const year = d.getFullYear();
+                    return `<div class="flex justify-center"><span class="whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">${day} ${mon} ${year}</span></div>`;
+                }
+            } catch (e) {}
+            return `<div class="flex justify-center"><span class="whitespace-nowrap text-xs text-slate-600 dark:text-slate-300">${escapeHTML(str)}</span></div>`;
+        }
+
+        function updateFilterStatusOptions() {
+            const filterStatus = document.getElementById('filterStatus');
+            if (!filterStatus) return;
+            
+            if (currentTab === 'salur') {
+                filterStatus.innerHTML = `
+                    <option value="">Semua Status</option>
+                    <option value="sudah salur">Dana Diterima: Sudah</option>
+                    <option value="belum salur">Dana Diterima: Belum</option>
+                    <option value="sudah dana">Lapor Dana Diterima: Sudah</option>
+                    <option value="belum dana">Lapor Dana Diterima: Belum</option>
+                    <option value="sudah bast">Lapor BAST: Sudah</option>
+                    <option value="belum bast">Lapor BAST: Belum</option>
+                    <option value="sudah lpj">Lapor LPJ: Sudah</option>
+                    <option value="belum lpj">Lapor LPJ: Belum</option>
+                    <option value="belum terima dana">Status: Belum Terima Dana</option>
+                    <option value="belum lapor dana">Status: Belum Lapor Dana</option>
+                    <option value="sedang proses">Status: Sedang Proses</option>
+                    <option value="lengkap">Status: Lengkap</option>
+                `;
+            } else {
+                filterStatus.innerHTML = `
+                    <option value="">Semua Status</option>
+                    <option value="belum mulai">Belum Mulai</option>
+                    <option value="tahap mengisi biodata">Tahap Mengisi Biodata</option>
+                    <option value="tahap ttd kepsek">Tahap TTD Kepsek</option>
+                    <option value="tahap ttd ppk">Tahap TTD PPK</option>
+                    <option value="lengkap">Lengkap</option>
+                    <option value="verval ditolak">Verval Ditolak</option>
+                `;
+            }
+        }
+
+        function normalizeData(rawRows, isSalur = false) {
+            if (!Array.isArray(rawRows)) return [];
+            return rawRows.map(row => {
+                const rowCopy = { ...row };
+                
+                if (isSalur) {
+                    if (!rowCopy['Status'] || String(rowCopy['Status']).trim() === '') {
+                        rowCopy['Status'] = getDerivedSalurStatus(rowCopy);
+                    }
+                    return rowCopy;
+                }
+                
+                let currentStatus = '';
+                if (rowCopy['Status']) {
+                    const s = String(rowCopy['Status']).toLowerCase().trim();
+                    if (s.includes('ditandatangani kepala sekolah')) {
+                        rowCopy['Status'] = 'Sudah TTD Kepsek';
+                        currentStatus = 'sudah ttd kepsek';
+                    } else if (s.includes('proses pengisian data') || s.includes('mengisi biodata')) {
+                        rowCopy['Status'] = 'Tahap Mengisi Biodata';
+                        currentStatus = 'tahap mengisi biodata';
+                    } else {
+                        currentStatus = s;
+                    }
+                }
+                
+                // Auto-ceklis berdasarkan status
+                if (rowCopy.isRejected || currentStatus.includes('tolak') || currentStatus === 'verval ditolak') {
+                    if (!rowCopy['Biodata']) rowCopy['Biodata'] = 'ada';
+                } else if (currentStatus.includes('selesai') || currentStatus.includes('lengkap') || currentStatus.includes('100%') || currentStatus.includes('diterima') || currentStatus.includes('salur')) {
+                    if (!rowCopy['Biodata']) rowCopy['Biodata'] = 'ada';
+                    if (!rowCopy['PKS']) rowCopy['PKS'] = 'ada';
+                    if (!rowCopy['SPTJM']) rowCopy['SPTJM'] = 'ada';
+                    if (!rowCopy['TTD PPK']) rowCopy['TTD PPK'] = 'ada';
+                    if (!rowCopy['E-Materai']) rowCopy['E-Materai'] = 'ada';
+                } else if (currentStatus.includes('tte ppk') || currentStatus.includes('e-materai')) {
+                    if (!rowCopy['Biodata']) rowCopy['Biodata'] = 'ada';
+                    if (!rowCopy['PKS']) rowCopy['PKS'] = 'ada';
+                    if (!rowCopy['SPTJM']) rowCopy['SPTJM'] = 'ada';
+                    if (!rowCopy['TTD PPK']) rowCopy['TTD PPK'] = 'ada';
+                } else if (currentStatus === 'sudah ttd kepsek' || currentStatus.includes('ditandatangani kepala sekolah') || currentStatus.includes('menunggu ppk')) {
+                    if (!rowCopy['Biodata']) rowCopy['Biodata'] = 'ada';
+                    if (!rowCopy['PKS']) rowCopy['PKS'] = 'ada';
+                    if (!rowCopy['SPTJM']) rowCopy['SPTJM'] = 'ada';
+                } else if (currentStatus === 'mengisi biodata' || currentStatus.includes('proses pengisian data')) {
+                    if (!rowCopy['Biodata']) rowCopy['Biodata'] = 'ada';
+                }
+
+                return rowCopy;
+            });
+        }
+
+        function sortData(list, isSalur = (currentTab === 'salur')) {
+            list.sort((a, b) => {
+                const getWeight = (row) => {
+                    if (row.isRejected) return 1;
+                    if (isSalur) {
+                        const rawStatus = (getRowValue(row, 'Status') || getDerivedSalurStatus(row)).toLowerCase().trim();
+                        if (row.isRejected || rawStatus.includes('tolak')) return 1;
+                        if (!row.inSalur || rawStatus.includes('belum terima') || rawStatus === 'belum salur') return 2;
+                        if (rawStatus.includes('belum lapor') || rawStatus === 'belum') return 3;
+                        if (rawStatus.includes('proses') || rawStatus.includes('bast')) return 4;
+                        if (rawStatus.includes('lengkap') || rawStatus.includes('selesai')) return 5;
+                        return 6;
+                    }
+                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
+                    if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-' || rawStatus === 'belum salur') return 2;
+                    if (rawStatus.includes('biodata') || rawStatus.includes('pengisian') || rawStatus.includes('dana diterima')) return 3;
+                    if (rawStatus.includes('ttd kepsek') || rawStatus.includes('kepala sekolah')) return 4;
+                    if (rawStatus.includes('ppk') || rawStatus.includes('tte ppk') || rawStatus.includes('ttd ppk')) return 5;
+                    if (rawStatus.includes('100%') || rawStatus.includes('selesai') || rawStatus.includes('lengkap')) return 6;
+                    return 7;
+                };
+                
+                const weightA = getWeight(a);
+                const weightB = getWeight(b);
+                
+                if (weightA !== weightB) {
+                    return weightA - weightB;
+                }
+                
+                // Jika status sama, urutkan berdasarkan kecamatan A-Z
+                const kecA = String(getRowValue(a, 'Kecamatan') || '').toLowerCase();
+                const kecB = String(getRowValue(b, 'Kecamatan') || '').toLowerCase();
+                if (kecA < kecB) return -1;
+                if (kecA > kecB) return 1;
+                return 0;
+            });
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            const btnPengisian = document.getElementById('tabBtnPengisian');
+            const btnSalur = document.getElementById('tabBtnSalur');
+            const subtitle = document.getElementById('sectionSubtitle');
+            const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+            
+            const cardsPengisian = document.getElementById('cardsPengisian');
+            const cardsSalur = document.getElementById('cardsSalur');
+            
+            if (currentTab === 'pengisian') {
+                if (cardsPengisian) cardsPengisian.classList.remove('hidden');
+                if (cardsSalur) cardsSalur.classList.add('hidden');
+                
+                if (btnPengisian) {
+                    btnPengisian.className = "flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-[#0e3f82] text-white shadow-sm cursor-pointer";
+                }
+                if (btnSalur) {
+                    btnSalur.className = "flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-all duration-200 cursor-pointer";
+                }
+                if (subtitle) {
+                    subtitle.innerText = "Ringkasan status progress administrasi dan pelaporan di aplikasi simenulis";
+                }
+                if (downloadPdfBtn) {
+                    downloadPdfBtn.title = "Download Daftar Verval Ditolak, Belum Mulai & Tahap Mengisi Biodata";
+                }
+                
+                globalData = [...dataPengisian];
+            } else {
+                if (cardsPengisian) cardsPengisian.classList.add('hidden');
+                if (cardsSalur) cardsSalur.classList.remove('hidden');
+                
+                if (btnSalur) {
+                    btnSalur.className = "flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-[#0e3f82] text-white shadow-sm cursor-pointer";
+                }
+                if (btnPengisian) {
+                    btnPengisian.className = "flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-all duration-200 cursor-pointer";
+                }
+                if (subtitle) {
+                    subtitle.innerText = "Ringkasan status progress administrasi dan pelaporan penerimaan bantuan (Sheet Salur)";
+                }
+                if (downloadPdfBtn) {
+                    downloadPdfBtn.title = "Download Daftar Laporan Penerimaan Bantuan";
+                }
+                
+                // Fallback jika dataSalur masih kosong dan belum pernah fetch parameter ?sheet=salur
+                if (dataSalur.length === 0 && !hasFetchedSalurFallback) {
+                    fetchSalurFallback();
+                    return;
+                }
+                
+                globalData = [...dataSalur];
+            }
+            
+            // Perbarui opsi filter status sesuai tab aktif
+            updateFilterStatusOptions();
+
+            // Perbarui visual kartu aktif untuk tab saat ini
+            updateActiveCardStyles();
+
+            // Reset filter & pencarian saat berganti tab
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.value = '';
+            
+            // Perbarui filter kecamatan sesuai data tab aktif
+            populateKecamatanFilter();
+            
+            // Render header tabel dan data
+            renderTableHeader();
+            applyFilters();
+        }
+
+        function fetchSalurFallback() {
+            const loader = document.getElementById('loader');
+            const loaderText = document.getElementById('loaderText');
+            if (loaderText) loaderText.innerText = 'Mengambil data Laporan Penerimaan Bantuan...';
+            if (loader) {
+                loader.classList.remove('hidden');
+                loader.classList.add('flex');
+            }
+            
+            const sep = scriptURL.includes('?') ? '&' : '?';
+            const salurUrl = scriptURL + sep + 'sheet=salur';
+            
+            fetch(salurUrl)
+                .then(res => res.json())
+                .then(result => {
+                    if (loader) {
+                        loader.classList.add('hidden');
+                        loader.classList.remove('flex');
+                    }
+                    hasFetchedSalurFallback = true;
+                    if (result.status === 'success' && result.data) {
+                        headersSalur = Array.isArray(result.headers) && result.headers.length > 0 ? result.headers : (Array.isArray(result.salurHeaders) ? result.salurHeaders : []);
+                        rawSalurData = result.data;
+                        dataSalur = buildSalurData(dataPengisian, rawSalurData);
+                        sortData(dataSalur, true);
+                        
+                        const badgeSalur = document.getElementById('tabBadgeSalur');
+                        if (badgeSalur) badgeSalur.innerText = dataSalur.length;
+                        
+                        if (currentTab === 'salur') {
+                            globalData = [...dataSalur];
+                            populateKecamatanFilter();
+                            renderTableHeader();
+                            applyFilters();
+                        }
+                    } else {
+                        dataSalur = [];
+                        if (currentTab === 'salur') {
+                            globalData = [];
+                            populateKecamatanFilter();
+                            renderTableHeader();
+                            applyFilters();
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching salur sheet:', err);
+                    if (loader) {
+                        loader.classList.add('hidden');
+                        loader.classList.remove('flex');
+                    }
+                    hasFetchedSalurFallback = true;
+                    dataSalur = [];
+                    if (currentTab === 'salur') {
+                        globalData = [];
+                        populateKecamatanFilter();
+                        renderTableHeader();
+                        applyFilters();
+                    }
+                });
+        }
+
         function populateKecamatanFilter() {
             const filterKecamatan = document.getElementById('filterKecamatan');
             const kecSet = new Set();
             
             globalData.forEach(row => {
-                if (row['Kecamatan']) {
-                    kecSet.add(row['Kecamatan']);
+                const k = getRowValue(row, 'Kecamatan');
+                if (k) {
+                    kecSet.add(k);
                 }
             });
 
@@ -762,61 +1414,89 @@
             
             filteredData = globalData.filter(row => {
                 // Pencarian Teks
-                const nama = String(row['Nama Sekolah'] || '').toLowerCase();
-                const npsn = String(row['NPSN'] || '').toLowerCase();
-                const kecName = String(row['Kecamatan'] || '').toLowerCase();
-                const matchSearch = !searchTerm || nama.includes(searchTerm) || npsn.includes(searchTerm) || kecName.includes(searchTerm);
+                const nama = String(getRowValue(row, 'Nama Sekolah') || '').toLowerCase();
+                const npsn = String(getRowValue(row, 'NPSN') || '').toLowerCase();
+                const kecName = String(getRowValue(row, 'Kecamatan') || '').toLowerCase();
+                const bentuk = String(getRowValue(row, 'Bentuk') || '').toLowerCase();
+                const matchSearch = !searchTerm || nama.includes(searchTerm) || npsn.includes(searchTerm) || kecName.includes(searchTerm) || bentuk.includes(searchTerm);
                 
                 // Filter Kecamatan
-                const matchKec = !filterKec || row['Kecamatan'] === filterKec;
+                const rowKec = getRowValue(row, 'Kecamatan');
+                const matchKec = !filterKec || rowKec === filterKec;
                 
                 // Filter Status
                 let matchStat = true;
                 if (filterStat) {
-                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
-                    let rowStatCategory = rawStatus;
-                    
-                    if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
-                        rowStatCategory = 'verval ditolak';
-                    } else if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') {
-                        rowStatCategory = 'belum mulai';
-                    } else if (rawStatus.includes('sudah ttd kepsek')) {
-                        rowStatCategory = 'sudah ttd kepsek';
-                    } else if (rawStatus.includes('mengisi biodata')) {
-                        rowStatCategory = 'mengisi biodata';
-                    }
+                    let rowStatCategory = '';
+                    if (currentTab === 'salur') {
+                        const valLaporDana = String(getRowValue(row, 'Lapor Dana Diterima') || '').toLowerCase().trim();
+                        const valDanaDiterima = String(getRowValue(row, 'Dana Diterima') || (row.inSalur ? 'sudah' : 'belum')).toLowerCase().trim();
+                        const valBast = String(getRowValue(row, 'BAST') || '').toLowerCase().trim();
+                        const valLpj = String(getRowValue(row, 'LPJ') || getRowValue(row, 'Pertanggungjawaban') || '').toLowerCase().trim();
 
-                    matchStat = rowStatCategory === filterStat;
+                        const isDanaDiterimaDone = valDanaDiterima === 'sudah' || !!row.inSalur;
+                        const isLaporDanaDone = valLaporDana === 'sudah' || valLaporDana.includes('sudah') || valLaporDana === 'ya' || valLaporDana === 'ada' || valLaporDana === 'v' || valLaporDana === '✓' || valLaporDana === 'true' || valLaporDana === '1';
+                        const isBastDone = valBast === 'sudah' || valBast.includes('sudah') || valBast === 'ya' || valBast === 'ada' || valBast === 'v' || valBast === '✓' || valBast === 'true' || valBast === '1';
+                        const isLpjDone = valLpj === 'sudah' || valLpj.includes('sudah') || valLpj === 'ya' || valLpj === 'ada' || valLpj === 'v' || valLpj === '✓' || valLpj === 'true' || valLpj === '1';
+
+                        const rawStatus = (getRowValue(row, 'Status') || getDerivedSalurStatus(row)).toLowerCase().trim();
+
+                        if (filterStat === 'sudah salur' || filterStat === 'sudah dana diterima' || filterStat === 'sudah terima dana') {
+                            matchStat = isDanaDiterimaDone;
+                        } else if (filterStat === 'belum salur' || filterStat === 'belum dana diterima' || filterStat === 'belum terima dana') {
+                            matchStat = !isDanaDiterimaDone;
+                        } else if (filterStat === 'sudah dana' || filterStat === 'sudah lapor dana') {
+                            matchStat = isDanaDiterimaDone && isLaporDanaDone;
+                        } else if (filterStat === 'belum dana' || filterStat === 'belum lapor dana') {
+                            matchStat = isDanaDiterimaDone && !isLaporDanaDone;
+                        } else if (filterStat === 'sudah bast') {
+                            matchStat = isDanaDiterimaDone && isBastDone;
+                        } else if (filterStat === 'belum bast') {
+                            matchStat = isDanaDiterimaDone && !isBastDone;
+                        } else if (filterStat === 'sudah lpj') {
+                            matchStat = isDanaDiterimaDone && isLpjDone;
+                        } else if (filterStat === 'belum lpj') {
+                            matchStat = isDanaDiterimaDone && !isLpjDone;
+                        } else if (filterStat === 'lengkap') {
+                            matchStat = isDanaDiterimaDone && (isLpjDone || rawStatus.includes('lengkap'));
+                        } else if (filterStat === 'proses' || filterStat === 'sedang proses' || filterStat === 'tahap lpj' || filterStat === 'tahap bast') {
+                            matchStat = isDanaDiterimaDone && (rawStatus.includes('proses') || ((isLaporDanaDone || isBastDone) && !isLpjDone));
+                        } else if (filterStat === 'belum terima dana') {
+                            matchStat = !isDanaDiterimaDone || rawStatus.includes('belum terima');
+                        } else if (filterStat === 'belum lapor dana') {
+                            matchStat = isDanaDiterimaDone && (!isLaporDanaDone || rawStatus.includes('belum lapor'));
+                        } else {
+                            matchStat = rawStatus.includes(filterStat);
+                        }
+                    } else {
+                        const rawStatus = String(row['Status'] || '').toLowerCase().trim();
+                        if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
+                            rowStatCategory = 'verval ditolak';
+                        } else if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') {
+                            rowStatCategory = 'belum mulai';
+                        } else if (rawStatus.includes('mengisi biodata') || rawStatus.includes('pengisian data')) {
+                            rowStatCategory = 'tahap mengisi biodata';
+                        } else if (rawStatus.includes('ttd kepsek') || rawStatus.includes('kepala sekolah')) {
+                            rowStatCategory = 'tahap ttd kepsek';
+                        } else if (rawStatus.includes('ppk') || rawStatus.includes('tte ppk') || rawStatus.includes('ttd ppk')) {
+                            rowStatCategory = 'tahap ttd ppk';
+                        } else if (rawStatus.includes('100%') || rawStatus.includes('selesai') || rawStatus.includes('lengkap')) {
+                            rowStatCategory = 'lengkap';
+                        } else {
+                            rowStatCategory = rawStatus;
+                        }
+
+                        matchStat = (rowStatCategory === filterStat) || 
+                                    (filterStat === 'sudah ttd kepsek' && rowStatCategory === 'tahap ttd kepsek') ||
+                                    (filterStat === 'mengisi biodata' && rowStatCategory === 'tahap mengisi biodata');
+                    }
                 }
 
                 return matchSearch && matchKec && matchStat;
             });
 
             // Urutkan data berdasarkan status prioritas, lalu Kecamatan
-            filteredData.sort((a, b) => {
-                const getWeight = (row) => {
-                    if (row.isRejected) return 1;
-                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
-                    if (!rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-') return 2;
-                    if (rawStatus.includes('mengisi biodata')) return 3;
-                    if (rawStatus.includes('100%') || rawStatus === 'selesai' || rawStatus === 'lengkap') return 5;
-                    return 4;
-                };
-                
-                const weightA = getWeight(a);
-                const weightB = getWeight(b);
-                
-                if (weightA !== weightB) {
-                    return weightA - weightB;
-                }
-                
-                // Jika status sama, urutkan berdasarkan kecamatan A-Z
-                const kecA = String(a['Kecamatan'] || '').toLowerCase();
-                const kecB = String(b['Kecamatan'] || '').toLowerCase();
-                if (kecA < kecB) return -1;
-                if (kecA > kecB) return 1;
-                return 0;
-            });
+            sortData(filteredData);
 
             currentPage = 1;
             
@@ -827,100 +1507,535 @@
         }
 
         function updateSummaryCards(data) {
+            const filterKec = document.getElementById('filterKecamatan') ? document.getElementById('filterKecamatan').value : '';
+
+            if (currentTab === 'salur') {
+                let totalSekolahMaster = 0;
+                let sudahSalur = 0;
+                let belumSalur = 0;
+
+                let danaSudah = 0;
+                let danaBelum = 0;
+                let bastSudah = 0;
+                let bastBelum = 0;
+                let lpjSudah = 0;
+                let lpjBelum = 0;
+
+                data.forEach(row => {
+                    totalSekolahMaster++;
+                    const hasReceivedDana = !!row.inSalur || String(getRowValue(row, 'Dana Diterima') || '').toLowerCase().trim() === 'sudah';
+                    if (hasReceivedDana) {
+                        sudahSalur++;
+
+                        const valLaporDana = String(getRowValue(row, 'Lapor Dana Diterima') || '').toLowerCase().trim();
+                        const valBast = String(getRowValue(row, 'BAST') || '').toLowerCase().trim();
+                        const valLpj = String(getRowValue(row, 'LPJ') || getRowValue(row, 'Pertanggungjawaban') || '').toLowerCase().trim();
+
+                        // Lapor Dana Diterima: hanya dihitung dari sekolah yang sudah terima dana
+                        const isDanaDone = valLaporDana === 'sudah' || valLaporDana.includes('sudah') || valLaporDana === 'ya' || valLaporDana === 'ada' || valLaporDana === 'v' || valLaporDana === '✓' || valLaporDana === 'true' || valLaporDana === '1';
+                        if (isDanaDone) {
+                            danaSudah++;
+                        } else {
+                            danaBelum++;
+                        }
+
+                        // Sudah Lapor BAST: hanya dihitung dari sekolah yang sudah terima dana
+                        const isBastDone = valBast === 'sudah' || valBast.includes('sudah') || valBast === 'ya' || valBast === 'ada' || valBast === 'v' || valBast === '✓' || valBast === 'true' || valBast === '1';
+                        if (isBastDone) {
+                            bastSudah++;
+                        } else {
+                            bastBelum++;
+                        }
+
+                        // Sudah Lapor Pertanggungjawaban: hanya dihitung dari sekolah yang sudah terima dana
+                        const isLpjDone = valLpj === 'sudah' || valLpj.includes('sudah') || valLpj === 'ya' || valLpj === 'ada' || valLpj === 'v' || valLpj === '✓' || valLpj === 'true' || valLpj === '1';
+                        if (isLpjDone) {
+                            lpjSudah++;
+                        } else {
+                            lpjBelum++;
+                        }
+                    } else {
+                        belumSalur++;
+                    }
+                });
+
+                const elSalurTotal = document.getElementById('countSalurTotal');
+                const elSalurSudah = document.getElementById('countSalurSudah');
+                const elSalurBelum = document.getElementById('countSalurBelum');
+                const elDanaSudah = document.getElementById('countSalurDanaSudah');
+                const elDanaBelum = document.getElementById('countSalurDanaBelum');
+                const elBastSudah = document.getElementById('countSalurBastSudah');
+                const elBastBelum = document.getElementById('countSalurBastBelum');
+                const elLpjSudah = document.getElementById('countSalurLpjSudah');
+                const elLpjBelum = document.getElementById('countSalurLpjBelum');
+
+                if (elSalurTotal) elSalurTotal.innerText = Number(totalSekolahMaster).toLocaleString('id-ID');
+                if (elSalurSudah) elSalurSudah.innerText = Number(sudahSalur).toLocaleString('id-ID');
+                if (elSalurBelum) elSalurBelum.innerText = Number(belumSalur).toLocaleString('id-ID');
+                if (elDanaSudah) elDanaSudah.innerText = Number(danaSudah).toLocaleString('id-ID');
+                if (elDanaBelum) elDanaBelum.innerText = Number(danaBelum).toLocaleString('id-ID');
+                if (elBastSudah) elBastSudah.innerText = Number(bastSudah).toLocaleString('id-ID');
+                if (elBastBelum) elBastBelum.innerText = Number(bastBelum).toLocaleString('id-ID');
+                if (elLpjSudah) elLpjSudah.innerText = Number(lpjSudah).toLocaleString('id-ID');
+                if (elLpjBelum) elLpjBelum.innerText = Number(lpjBelum).toLocaleString('id-ID');
+
+                // Update persentase dan mini progress bar di dalam card
+                const totalDana = (danaSudah + danaBelum) || 1;
+                const totalBast = (bastSudah + bastBelum) || 1;
+                const totalLpj = (lpjSudah + lpjBelum) || 1;
+
+                const pctDana = Math.round((danaSudah / totalDana) * 100);
+                const pctBast = Math.round((bastSudah / totalBast) * 100);
+                const pctLpj = Math.round((lpjSudah / totalLpj) * 100);
+
+                const elPctDana = document.getElementById('pctSalurDana');
+                const elPctBast = document.getElementById('pctSalurBast');
+                const elPctLpj = document.getElementById('pctSalurLpj');
+
+                const elBarDana = document.getElementById('barSalurDana');
+                const elBarBast = document.getElementById('barSalurBast');
+                const elBarLpj = document.getElementById('barSalurLpj');
+
+                if (elPctDana) elPctDana.innerText = pctDana + '%';
+                if (elPctBast) elPctBast.innerText = pctBast + '%';
+                if (elPctLpj) elPctLpj.innerText = pctLpj + '%';
+
+                if (elBarDana) elBarDana.style.width = pctDana + '%';
+                if (elBarBast) elBarBast.style.width = pctBast + '%';
+                if (elBarLpj) elBarLpj.style.width = pctLpj + '%';
+
+                return;
+            }
+
+            // Tab 1: Pengisian Data Bantuan
             let total = data.length;
             let belum = 0;
             let biodata = 0;
-            let proses = 0;
             let ditolak = 0;
+            let ttdKepsek = 0;
+            let ttdPpk = 0;
+            let lengkap = 0;
 
             data.forEach(row => {
                 const status = String(row['Status'] || '').toLowerCase().trim();
                 
                 // Logika penghitungan
-                if (row.isRejected) {
+                if (row.isRejected || status.includes('tolak') || status === 'verval ditolak') {
                     ditolak++;
-                } else if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-') {
+                } else if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-' || status === 'belum salur') {
                     belum++;
-                } else if (status.includes('mengisi biodata')) {
+                } else if (status.includes('mengisi biodata') || status.includes('pengisian data')) {
                     biodata++;
-                } else if (status.includes('100%') || status === 'selesai' || status === 'lengkap') {
-                    // Selesai
-                } else {
-                    proses++;
+                } else if (status.includes('ttd kepsek') || status.includes('kepala sekolah')) {
+                    ttdKepsek++;
+                } else if (status.includes('ppk') || status.includes('tte ppk') || status.includes('ttd ppk')) {
+                    ttdPpk++;
+                } else if (status.includes('100%') || status.includes('selesai') || status.includes('lengkap')) {
+                    lengkap++;
                 }
             });
 
             // Update DOM element
-            document.getElementById('countTotal').innerText = total;
-            document.getElementById('countBelum').innerText = belum;
-            document.getElementById('countBiodata').innerText = biodata;
-            document.getElementById('countProses').innerText = proses;
-            document.getElementById('countDitolak').innerText = ditolak;
+            const elTotal = document.getElementById('countTotal');
+            const elBelum = document.getElementById('countBelum');
+            const elBiodata = document.getElementById('countBiodata');
+            const elDitolak = document.getElementById('countDitolak');
+            const elTtdKepsek = document.getElementById('countTtdKepsek');
+            const elTtdPpk = document.getElementById('countTtdPpk');
+            const elLengkap = document.getElementById('countLengkap');
+
+            if (elTotal) elTotal.innerText = Number(total).toLocaleString('id-ID');
+            if (elBelum) elBelum.innerText = Number(belum).toLocaleString('id-ID');
+            if (elBiodata) elBiodata.innerText = Number(biodata).toLocaleString('id-ID');
+            if (elDitolak) elDitolak.innerText = Number(ditolak).toLocaleString('id-ID');
+            if (elTtdKepsek) elTtdKepsek.innerText = Number(ttdKepsek).toLocaleString('id-ID');
+            if (elTtdPpk) elTtdPpk.innerText = Number(ttdPpk).toLocaleString('id-ID');
+            if (elLengkap) elLengkap.innerText = Number(lengkap).toLocaleString('id-ID');
+        }
+
+        function selectChartMetric(metric) {
+            if (currentTab === 'salur') {
+                activeChartMetricSalur = metric;
+            } else {
+                activeChartMetricPengisian = metric;
+            }
+            updateActiveCardStyles();
+            renderChart(filteredData);
+
+            // Scroll perlahan ke grafik pada layar mobile
+            const chartContainer = document.getElementById('chartContainer');
+            if (chartContainer && window.innerWidth < 768) {
+                chartContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function updateActiveCardStyles() {
+            const isSalur = (currentTab === 'salur');
+            const activeMetric = isSalur ? activeChartMetricSalur : activeChartMetricPengisian;
+
+            const salurCards = [
+                { key: 'total', id: 'cardSalur_total', ring: 'ring-blue-500', border: 'border-blue-400' },
+                { key: 'salur', id: 'cardSalur_salur', ring: 'ring-emerald-500', border: 'border-emerald-400' },
+                { key: 'dana',  id: 'cardSalur_dana',  ring: 'ring-sky-500', border: 'border-sky-400' },
+                { key: 'bast',  id: 'cardSalur_bast',  ring: 'ring-amber-500', border: 'border-amber-400' },
+                { key: 'lpj',   id: 'cardSalur_lpj',   ring: 'ring-purple-500', border: 'border-purple-400' }
+            ];
+
+            const pengisianCards = [
+                { key: 'total',     id: 'cardPengisian_total',     ring: 'ring-blue-500',    border: 'border-blue-400' },
+                { key: 'belum',     id: 'cardPengisian_belum',     ring: 'ring-slate-400',   border: 'border-slate-400' },
+                { key: 'biodata',   id: 'cardPengisian_biodata',   ring: 'ring-violet-500',  border: 'border-violet-400' },
+                { key: 'ttdKepsek', id: 'cardPengisian_ttdKepsek', ring: 'ring-amber-500',   border: 'border-amber-400' },
+                { key: 'ttdPpk',    id: 'cardPengisian_ttdPpk',    ring: 'ring-indigo-500',  border: 'border-indigo-400' },
+                { key: 'lengkap',   id: 'cardPengisian_lengkap',   ring: 'ring-emerald-500', border: 'border-emerald-400' }
+            ];
+
+            const allCards = isSalur ? salurCards : pengisianCards;
+
+            allCards.forEach(c => {
+                const el = document.getElementById(c.id);
+                if (!el) return;
+
+                el.classList.remove(
+                    'ring-2', 'ring-blue-500', 'ring-emerald-500', 'ring-sky-500', 'ring-amber-500', 'ring-purple-500', 'ring-slate-400', 'ring-violet-500', 'ring-indigo-500',
+                    'border-blue-400', 'border-emerald-400', 'border-sky-400', 'border-amber-400', 'border-purple-400', 'border-slate-400', 'border-violet-400', 'border-indigo-400',
+                    'bg-white', 'dark:bg-slate-700', 'shadow-md', 'scale-[1.01]'
+                );
+
+                if (c.key === activeMetric) {
+                    el.classList.add('ring-2', c.ring, c.border, 'bg-white', 'dark:bg-slate-700', 'shadow-md', 'scale-[1.01]');
+                    el.classList.remove('bg-slate-50', 'dark:bg-slate-700/30', 'border-slate-100', 'dark:border-slate-600/50');
+                } else {
+                    el.classList.add('bg-slate-50', 'dark:bg-slate-700/30', 'border-slate-100', 'dark:border-slate-600/50');
+                }
+            });
         }
 
         function renderChart(data) {
             const chartContainer = document.getElementById('chartContainer');
-            
-            if(data.length === 0) {
-                chartContainer.classList.add('hidden');
+            const sourceMaster = (dataPengisian && dataPengisian.length > 0) ? dataPengisian : dataSalur;
+
+            if (!data || (data.length === 0 && sourceMaster.length === 0)) {
+                if (chartContainer) chartContainer.classList.add('hidden');
                 return;
             } else {
-                chartContainer.classList.remove('hidden');
+                if (chartContainer) chartContainer.classList.remove('hidden');
             }
 
-            const ctx = document.getElementById('kecamatanChart').getContext('2d');
-            
-            // Kelompokkan data per kecamatan
+            const chartTitle = document.getElementById('chartTitle');
+            const chartSubtitle = document.getElementById('chartSubtitle');
+
+            const filterKec = document.getElementById('filterKecamatan') ? document.getElementById('filterKecamatan').value : '';
+            const selectedKec = filterKec ? filterKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim().toLowerCase() : '';
+
+            let titleText = '';
+            let subtitleText = '';
+            let chartLabel = '';
+            let barBgColor = '#059669';
+            let isCountMetric = false;
+            let tooltipDesc = 'sudah terima dana dari';
+
             const kecMap = {};
-            
-            data.forEach(row => {
-                let rawKec = String(row['Kecamatan'] || 'Tidak Diketahui').trim();
-                // Hapus kata Kec. atau Kecamatan di awal kalimat
-                let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
 
-                if (!kecMap[kec]) {
-                    kecMap[kec] = { total: 0, proses: 0 };
+            if (currentTab === 'salur') {
+                const metric = activeChartMetricSalur || 'salur';
+
+                if (metric === 'total') {
+                    // Persebaran Total Sasaran
+                    isCountMetric = true;
+                    titleText = 'Persebaran Total Sekolah Sasaran per Kecamatan';
+                    subtitleText = 'Menampilkan jumlah target sekolah penerima bantuan per kecamatan';
+                    chartLabel = 'Total Sekolah (Sasaran)';
+                    barBgColor = '#2563eb'; // blue
+
+                    sourceMaster.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+
+                        if (!kecMap[kec]) {
+                            kecMap[kec] = { total: 0, count: 0 };
+                        }
+                        kecMap[kec].total++;
+                        kecMap[kec].count++;
+                    });
+
+                } else if (metric === 'salur') {
+                    // Sudah Terima Dana vs Total Sasaran
+                    isCountMetric = false;
+                    titleText = 'Progres Penerimaan Dana per Kecamatan';
+                    subtitleText = 'Persentase sekolah yang telah menerima dana bantuan terhadap total sasaran per kecamatan';
+                    chartLabel = 'Sudah Terima Dana (%)';
+                    barBgColor = '#059669'; // emerald
+                    tooltipDesc = 'sudah terima dana dari';
+
+                    // Denominator: Total Sasaran dari master data
+                    sourceMaster.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+
+                        if (!kecMap[kec]) {
+                            kecMap[kec] = { total: 0, count: 0 };
+                        }
+                        kecMap[kec].total++;
+                    });
+
+                    data.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+
+                        if (!kecMap[kec]) {
+                            kecMap[kec] = { total: 0, count: 0 };
+                        }
+                        kecMap[kec].total++;
+                        if (row.inSalur) {
+                            kecMap[kec].count++;
+                        }
+                    });
+
+                    // Pastikan count tidak melebihi total master
+                    Object.keys(kecMap).forEach(k => {
+                        if (kecMap[k].count > kecMap[k].total) {
+                            kecMap[k].total = kecMap[k].count;
+                        }
+                    });
+
+                } else if (metric === 'dana') {
+                    // Lapor Dana Diterima
+                    isCountMetric = false;
+                    titleText = 'Progres Lapor Dana Diterima per Kecamatan';
+                    subtitleText = 'Persentase sekolah penerima yang telah lapor dana diterima di setiap kecamatan';
+                    chartLabel = 'Lapor Dana Diterima (%)';
+                    barBgColor = '#0284c7'; // sky blue
+                    tooltipDesc = 'sudah lapor dana dari';
+
+                    // Inisialisasi kecamatan dari master jika ada agar grafik lengkap
+                    sourceMaster.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+                    });
+
+                    data.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+
+                        const hasReceivedDana = !!row.inSalur || String(getRowValue(row, 'Dana Diterima') || '').toLowerCase().trim() === 'sudah';
+                        if (hasReceivedDana) {
+                            kecMap[kec].total++;
+                            const valDana = String(getRowValue(row, 'Lapor Dana Diterima') || '').toLowerCase().trim();
+                            const isDone = valDana === 'sudah' || valDana.includes('sudah') || valDana === 'ya' || valDana === 'ada' || valDana === 'v' || valDana === '✓' || valDana === 'true' || valDana === '1';
+                            if (isDone) {
+                                kecMap[kec].count++;
+                            }
+                        }
+                    });
+
+                } else if (metric === 'bast') {
+                    // Lapor BAST
+                    isCountMetric = false;
+                    titleText = 'Progres Lapor BAST per Kecamatan';
+                    subtitleText = 'Persentase sekolah penerima yang telah lapor BAST di setiap kecamatan';
+                    chartLabel = 'Lapor BAST (%)';
+                    barBgColor = '#d97706'; // amber
+                    tooltipDesc = 'sudah lapor BAST dari';
+
+                    sourceMaster.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+                    });
+
+                    data.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+
+                        const hasReceivedDana = !!row.inSalur || String(getRowValue(row, 'Dana Diterima') || '').toLowerCase().trim() === 'sudah';
+                        if (hasReceivedDana) {
+                            kecMap[kec].total++;
+                            const valBast = String(getRowValue(row, 'BAST') || '').toLowerCase().trim();
+                            const isDone = valBast === 'sudah' || valBast.includes('sudah') || valBast === 'ya' || valBast === 'ada' || valBast === 'v' || valBast === '✓' || valBast === 'true' || valBast === '1';
+                            if (isDone) {
+                                kecMap[kec].count++;
+                            }
+                        }
+                    });
+
+                } else if (metric === 'lpj') {
+                    // Lapor Pertanggungjawaban
+                    isCountMetric = false;
+                    titleText = 'Progres Lapor Pertanggungjawaban (LPJ) per Kecamatan';
+                    subtitleText = 'Persentase sekolah penerima yang telah lapor LPJ di setiap kecamatan';
+                    chartLabel = 'Lapor LPJ (%)';
+                    barBgColor = '#9333ea'; // purple
+                    tooltipDesc = 'sudah lapor LPJ dari';
+
+                    sourceMaster.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+                    });
+
+                    data.forEach(row => {
+                        let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                        let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                        if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+                        if (!kecMap[kec]) kecMap[kec] = { total: 0, count: 0 };
+
+                        const hasReceivedDana = !!row.inSalur || String(getRowValue(row, 'Dana Diterima') || '').toLowerCase().trim() === 'sudah';
+                        if (hasReceivedDana) {
+                            kecMap[kec].total++;
+                            const valLpj = String(getRowValue(row, 'LPJ') || getRowValue(row, 'Pertanggungjawaban') || '').toLowerCase().trim();
+                            const isDone = valLpj === 'sudah' || valLpj.includes('sudah') || valLpj === 'ya' || valLpj === 'ada' || valLpj === 'v' || valLpj === '✓' || valLpj === 'true' || valLpj === '1';
+                            if (isDone) {
+                                kecMap[kec].count++;
+                            }
+                        }
+                    });
                 }
-                
-                kecMap[kec].total++; // Hitung total sekolah
-                
-                const status = String(row['Status'] || '').toLowerCase().trim();
-                if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-') {
-                    // Abaikan
-                } else if (status.includes('100%') || status === 'selesai' || status === 'lengkap') {
-                    // Abaikan
+            } else {
+                // Tab Pengisian Data Bantuan
+                const metric = activeChartMetricPengisian || 'proses';
+
+                data.forEach(row => {
+                    let rawKec = String(getRowValue(row, 'Kecamatan') || 'Tidak Diketahui').trim();
+                    let kec = rawKec.replace(/^Kec(?:amatan)?\.?\s+/i, '').trim();
+                    if (selectedKec && kec.toLowerCase() !== selectedKec) return;
+
+                    if (!kecMap[kec]) {
+                        kecMap[kec] = { total: 0, count: 0 };
+                    }
+                    kecMap[kec].total++;
+
+                    const status = String(row['Status'] || '').toLowerCase().trim();
+
+                    if (metric === 'total') {
+                        isCountMetric = true;
+                        kecMap[kec].count++;
+                    } else if (metric === 'belum') {
+                        if (!status || status === '0%' || status === 'belum mulai' || status === 'belum' || status === '-') {
+                            kecMap[kec].count++;
+                        }
+                    } else if (metric === 'biodata') {
+                        if (status.includes('mengisi biodata') || status.includes('pengisian data')) {
+                            kecMap[kec].count++;
+                        }
+                    } else if (metric === 'ttdKepsek') {
+                        if (status.includes('ttd kepsek') || status.includes('kepala sekolah')) {
+                            kecMap[kec].count++;
+                        }
+                    } else if (metric === 'ttdPpk') {
+                        if (status.includes('ppk') || status.includes('tte ppk') || status.includes('ttd ppk')) {
+                            kecMap[kec].count++;
+                        }
+                    } else if (metric === 'lengkap') {
+                        if (status.includes('100%') || status.includes('selesai') || status.includes('lengkap')) {
+                            kecMap[kec].count++;
+                        }
+                    } else {
+                        // Default pengisian: proses
+                        if (status && status !== '0%' && status !== 'belum mulai' && status !== 'belum' && status !== '-' && !status.includes('100%') && status !== 'selesai' && status !== 'lengkap') {
+                            kecMap[kec].count++;
+                        }
+                    }
+                });
+
+                if (metric === 'total') {
+                    isCountMetric = true;
+                    titleText = 'Total Sekolah per Kecamatan';
+                    subtitleText = 'Jumlah total sekolah sasaran per kecamatan';
+                    chartLabel = 'Total Sekolah';
+                    barBgColor = '#2563eb';
+                } else if (metric === 'belum') {
+                    titleText = 'Persentase Belum Mulai per Kecamatan';
+                    subtitleText = 'Persentase sekolah yang belum mulai mengisi data per kecamatan';
+                    chartLabel = 'Belum Mulai (%)';
+                    barBgColor = '#64748b';
+                    tooltipDesc = 'belum mulai dari';
+                } else if (metric === 'biodata') {
+                    titleText = 'Progres Tahap Mengisi Biodata per Kecamatan';
+                    subtitleText = 'Persentase sekolah dalam tahap mengisi biodata per kecamatan';
+                    chartLabel = 'Mengisi Biodata (%)';
+                    barBgColor = '#7c3aed';
+                    tooltipDesc = 'tahap biodata dari';
+                } else if (metric === 'ttdKepsek') {
+                    titleText = 'Progres Tahap TTD Kepsek per Kecamatan';
+                    subtitleText = 'Persentase sekolah dalam tahap tanda tangan Kepala Sekolah per kecamatan';
+                    chartLabel = 'Tahap TTD Kepsek (%)';
+                    barBgColor = '#d97706';
+                    tooltipDesc = 'tahap TTD Kepsek dari';
+                } else if (metric === 'ttdPpk') {
+                    titleText = 'Progres Tahap TTD PPK per Kecamatan';
+                    subtitleText = 'Persentase sekolah dalam tahap tanda tangan PPK per kecamatan';
+                    chartLabel = 'Tahap TTD PPK (%)';
+                    barBgColor = '#4f46e5';
+                    tooltipDesc = 'tahap TTD PPK dari';
+                } else if (metric === 'lengkap') {
+                    titleText = 'Progres Berkas Lengkap (100%) per Kecamatan';
+                    subtitleText = 'Persentase sekolah dengan berkas administrasi lengkap 100% per kecamatan';
+                    chartLabel = 'Lengkap (%)';
+                    barBgColor = '#059669';
+                    tooltipDesc = 'lengkap dari';
                 } else {
-                    kecMap[kec].proses++;
+                    titleText = 'Progres Administrasi per Kecamatan (Dalam Proses)';
+                    subtitleText = 'Persentase sekolah yang sedang dalam proses administrasi per kecamatan';
+                    chartLabel = 'Dalam Proses (%)';
+                    barBgColor = '#0e3f82';
+                    tooltipDesc = 'dalam proses dari';
                 }
+            }
+
+            if (chartTitle) chartTitle.innerText = titleText;
+            if (chartSubtitle) chartSubtitle.innerText = subtitleText;
+
+            // Urutkan label (kecamatan)
+            let labels = [];
+            if (isCountMetric) {
+                // Urutkan berdasarkan total sekolah terbanyak
+                labels = Object.keys(kecMap).sort((a, b) => {
+                    return (kecMap[b].total || 0) - (kecMap[a].total || 0);
+                });
+            } else {
+                // Urutkan berdasarkan persentase tertinggi
+                labels = Object.keys(kecMap).sort((a, b) => {
+                    const pctA = !kecMap[a].total ? 0 : (kecMap[a].count / kecMap[a].total) * 100;
+                    const pctB = !kecMap[b].total ? 0 : (kecMap[b].count / kecMap[b].total) * 100;
+                    if (pctB !== pctA) return pctB - pctA;
+                    return (kecMap[b].count || 0) - (kecMap[a].count || 0);
+                });
+            }
+
+            const chartDataValues = labels.map(kec => {
+                if (isCountMetric) {
+                    return kecMap[kec].total || 0;
+                }
+                if (!kecMap[kec].total || kecMap[kec].total === 0) return 0;
+                return parseFloat(((kecMap[kec].count / kecMap[kec].total) * 100).toFixed(1));
             });
 
-            // Urutkan label (kecamatan) berdasarkan persentase Dalam Proses dari yang terbesar
-            const labels = Object.keys(kecMap).sort((a, b) => {
-                const pctA = kecMap[a].total === 0 ? 0 : (kecMap[a].proses / kecMap[a].total) * 100;
-                const pctB = kecMap[b].total === 0 ? 0 : (kecMap[b].proses / kecMap[b].total) * 100;
-                return pctB - pctA;
-            });
-            
-            const dataProses = labels.map(kec => {
-                if (kecMap[kec].total === 0) return 0;
-                return parseFloat(((kecMap[kec].proses / kecMap[kec].total) * 100).toFixed(1));
-            });
-
-            // Hancurkan instance chart lama jika sudah ada
+            const ctx = document.getElementById('kecamatanChart').getContext('2d');
             if (myChart) {
                 myChart.destroy();
             }
 
-            // Buat Bar Chart baru (Persentase Dalam Proses)
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Dalam Proses (%)',
-                            data: dataProses,
-                            backgroundColor: '#0e3f82',
+                            label: chartLabel,
+                            data: chartDataValues,
+                            backgroundColor: barBgColor,
                             borderRadius: 4
                         }
                     ]
@@ -930,7 +2045,7 @@
                     maintainAspectRatio: false,
                     layout: {
                         padding: {
-                            top: 25 // Beri ruang ekstra di atas agar label tidak terpotong
+                            top: 25
                         }
                     },
                     scales: {
@@ -943,17 +2058,17 @@
                         },
                         y: {
                             beginAtZero: true,
-                            max: 100, // Karena persentase, batas maksimalnya 100
+                            max: isCountMetric ? undefined : 100,
                             ticks: {
                                 callback: function(value) {
-                                    return value + '%';
+                                    return isCountMetric ? value : value + '%';
                                 }
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            display: false // Sembunyikan legenda karena hanya ada 1 tipe data
+                            display: false
                         },
                         datalabels: {
                             anchor: 'end',
@@ -965,27 +2080,75 @@
                             },
                             formatter: function(value, context) {
                                 const kec = context.chart.data.labels[context.dataIndex];
-                                const proses = kecMap[kec].proses;
-                                const total = kecMap[kec].total;
-                                // Tampilkan angka mentahnya (misal: 5/10)
-                                if (total === 0) return '';
-                                return proses + '/' + total;
+                                if (!kecMap[kec]) return '';
+                                if (isCountMetric) {
+                                    return (kecMap[kec].total || 0) > 0 ? (kecMap[kec].total + ' Sek.') : '';
+                                }
+                                if (kecMap[kec].total === 0) return '';
+                                return (kecMap[kec].count || 0) + '/' + kecMap[kec].total;
                             }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
                                     const kec = context.label;
+                                    if (isCountMetric) {
+                                        return (kecMap[kec] ? kecMap[kec].total : 0) + ' Sekolah Sasaran';
+                                    }
                                     const pct = context.parsed.y;
-                                    const proses = kecMap[kec].proses;
-                                    const total = kecMap[kec].total;
-                                    return pct + '% (' + proses + ' dari ' + total + ' sekolah)';
+                                    const count = kecMap[kec] ? kecMap[kec].count : 0;
+                                    const total = kecMap[kec] ? kecMap[kec].total : 0;
+                                    return pct + '% (' + count + ' ' + tooltipDesc + ' ' + total + ' sekolah)';
                                 }
                             }
                         }
                     }
                 }
             });
+        }
+
+        function getTableColumns() {
+            if (currentTab === 'salur') {
+                return ['Kecamatan', 'NPSN', 'Nama Sekolah', 'Dana Diterima', 'Lapor Dana Diterima', 'Lapor BAST', 'Lapor LPJ', 'Status'];
+            }
+            if (Array.isArray(headersPengisian) && headersPengisian.length > 0) {
+                const filtered = headersPengisian.filter(h => {
+                    const hl = String(h).trim().toLowerCase();
+                    return hl !== 'isrejected' && hl !== 'id' && hl !== 'no' && hl !== '#';
+                });
+                if (filtered.length > 0) return filtered;
+            }
+            return ['Kecamatan', 'NPSN', 'Nama Sekolah', 'Biodata', 'PKS', 'SPTJM', 'TTD PPK', 'E-Materai', 'Status'];
+        }
+
+        function renderTableHeader() {
+            const tableHead = document.getElementById('tableHead');
+            if (!tableHead) return;
+            
+            const cols = getTableColumns();
+            let thHtml = '';
+            
+            cols.forEach(col => {
+                const colLower = String(col).toLowerCase().trim();
+                let label = col;
+                if (colLower === 'tgl dana diterima') {
+                    label = 'Tgl Terima';
+                }
+                
+                if (colLower === 'kecamatan' || colLower === 'npsn' || colLower === 'nama sekolah' || colLower === 'sekolah') {
+                    thHtml += `<th class="px-2 py-3 font-semibold">${escapeHTML(label)}</th>`;
+                } else if (colLower === 'status' || colLower === 'status progres') {
+                    thHtml += `<th class="px-2 py-3 font-semibold">${escapeHTML(label)}</th>`;
+                } else {
+                    thHtml += `<th class="px-2 py-3 font-semibold text-center">${escapeHTML(label)}</th>`;
+                }
+            });
+            
+            tableHead.innerHTML = `
+                <tr class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 text-xs uppercase tracking-wider sticky top-0 z-10">
+                    ${thHtml}
+                </tr>
+            `;
         }
 
         function renderTable() {
@@ -1013,22 +2176,40 @@
             // Perbarui teks info pagination
             document.getElementById('paginationInfo').innerText = `Menampilkan ${startIndex + 1} sampai ${endIndex} dari ${filteredData.length} entri`;
 
+            const cols = getTableColumns();
+
             paginatedData.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors duration-150";
                 
-                tr.innerHTML = `
-                    <td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200">${escapeHTML(row['Kecamatan'] || '-')}</td>
-                    <td class="px-2 py-3 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeHTML(row['NPSN'] || '-')}</td>
-                    <td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200 leading-snug">${escapeHTML(row['Nama Sekolah'] || '-')}</td>
-                    <td class="px-2 py-3">${formatIcon(row['Biodata'])}</td>
-                    <td class="px-2 py-3">${formatIcon(row['PKS'])}</td>
-                    <td class="px-2 py-3">${formatIcon(row['SPTJM'])}</td>
-                    <td class="px-2 py-3">${formatIcon(row['TTD PPK'])}</td>
-                    <td class="px-2 py-3">${formatIcon(row['E-Materai'])}</td>
-                    <td class="px-2 py-3">${row.isRejected ? formatProgres('Verval Ditolak') : formatProgres(row['Status'])}</td>
-                `;
+                let rowHtml = '';
+                cols.forEach(col => {
+                    const colLower = String(col).toLowerCase().trim();
+                    const val = getRowValue(row, col);
+                    
+                    if (colLower === 'kecamatan') {
+                        rowHtml += `<td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200">${escapeHTML(val || '-')}</td>`;
+                    } else if (colLower === 'npsn') {
+                        rowHtml += `<td class="px-2 py-3 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeHTML(val || '-')}</td>`;
+                    } else if (colLower === 'nama sekolah' || colLower === 'sekolah') {
+                        rowHtml += `<td class="px-2 py-3 font-medium text-slate-800 dark:text-slate-200 leading-snug">${escapeHTML(val || '-')}</td>`;
+                    } else if (colLower === 'bentuk') {
+                        rowHtml += `<td class="px-2 py-3 text-center">${formatBentuk(val)}</td>`;
+                    } else if (colLower === 'dana diterima' || colLower === 'lapor dana diterima' || colLower === 'dana') {
+                        rowHtml += `<td class="px-2 py-3 text-center">${formatStatusSudahBelum(val)}</td>`;
+                    } else if (colLower === 'lapor bast' || colLower === 'bast' || colLower === 'lapor lpj' || colLower === 'lpj') {
+                        rowHtml += `<td class="px-2 py-3 text-center">${currentTab === 'salur' ? formatStatusSudahBelum(val) : formatIcon(val)}</td>`;
+                    } else if (colLower.includes('tgl') || colLower.includes('tanggal')) {
+                        rowHtml += `<td class="px-2 py-3 text-center">${formatTgl(val)}</td>`;
+                    } else if (colLower === 'status' || colLower === 'status progres') {
+                        const st = row.isRejected ? 'Verval Ditolak' : (currentTab === 'salur' ? getDerivedSalurStatus(row) : (val || '-'));
+                        rowHtml += `<td class="px-2 py-3">${formatProgres(st)}</td>`;
+                    } else {
+                        rowHtml += `<td class="px-2 py-3">${formatIcon(val)}</td>`;
+                    }
+                });
                 
+                tr.innerHTML = rowHtml;
                 tableBody.appendChild(tr);
             });
 
@@ -1110,12 +2291,24 @@
             
             if (val === 'ditolak' || val === 'verval ditolak') {
                 badgeClasses = 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 border border-red-200 dark:border-red-800';
-            } else if (val.includes('100%') || val === 'selesai' || val === 'lengkap') {
+            } else if (val.includes('100%') || val === 'selesai' || val.includes('lengkap')) {
                 badgeClasses = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
-            } else if (val === '0%' || val === 'belum mulai') {
+            } else if (val.includes('belum lapor')) {
+                badgeClasses = 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300 border border-rose-200 dark:border-rose-800';
+            } else if (val.includes('belum terima') || val === '0%' || val === 'belum mulai' || val === 'belum salur' || val === 'belum' || val === '-') {
                 badgeClasses = 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600';
+            } else if (val.includes('proses') || val.includes('sedang proses')) {
+                badgeClasses = 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 border border-blue-200 dark:border-blue-800';
+            } else if (val.includes('bast')) {
+                badgeClasses = 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 border border-amber-200 dark:border-amber-800';
+            } else if (val.includes('lpj')) {
+                badgeClasses = 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800';
+            } else if (val.includes('ppk') || val.includes('tte ppk') || val.includes('ttd ppk')) {
+                badgeClasses = 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800';
+            } else if (val.includes('ttd kepsek') || val.includes('kepala sekolah')) {
+                badgeClasses = 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 border border-amber-200 dark:border-amber-800';
             } else {
-                badgeClasses = 'bg-amber-100 text-amber-700';
+                badgeClasses = 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 border border-blue-200 dark:border-blue-800';
             }
             
             return `<span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold ${badgeClasses}">${escapeHTML(value)}</span>`;
@@ -1131,27 +2324,44 @@
         }
 
         async function downloadPDF() {
-            // Filter globalData untuk "verval ditolak", "belum mulai", dan "mengisi biodata"
-            const dataToExport = globalData.filter(row => {
-                const rawStatus = String(row['Status'] || '').toLowerCase().trim();
-                let isDitolak = row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak';
-                let isBelum = !rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-';
-                let isMengisiBiodata = rawStatus.includes('mengisi biodata');
-                return isDitolak || isBelum || isMengisiBiodata;
-            });
+            let dataToExport = [];
+            let reportTitle = "";
+            let filePrefix = "";
+            const isSalur = (currentTab === 'salur');
 
-            if (dataToExport.length === 0) {
-                alert('Tidak ada data sekolah dengan status Ditolak, Belum Dimulai, atau Mengisi Biodata.');
-                return;
+            if (isSalur) {
+                reportTitle = "Daftar Sekolah - Laporan Penerimaan Bantuan";
+                filePrefix = "Laporan_Penerimaan_Bantuan";
+                dataToExport = filteredData.length > 0 ? filteredData : globalData;
+                if (dataToExport.length === 0) {
+                    alert('Tidak ada data sekolah pada Laporan Penerimaan Bantuan.');
+                    return;
+                }
+            } else {
+                reportTitle = "Daftar Sekolah - Status Verval Ditolak, Belum Mulai & Tahap Mengisi Biodata";
+                filePrefix = "Daftar_Sekolah_Ditolak_Belum_Mulai_Mengisi_Biodata";
+                // Filter globalData untuk "verval ditolak", "belum mulai", dan "mengisi biodata"
+                dataToExport = globalData.filter(row => {
+                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
+                    let isDitolak = row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak';
+                    let isBelum = !rawStatus || rawStatus === '0%' || rawStatus === 'belum mulai' || rawStatus === 'belum' || rawStatus === '-';
+                    let isMengisiBiodata = rawStatus.includes('mengisi biodata') || rawStatus.includes('pengisian data');
+                    return isDitolak || isBelum || isMengisiBiodata;
+                });
+
+                if (dataToExport.length === 0) {
+                    alert('Tidak ada data sekolah dengan status Ditolak, Belum Dimulai, atau Mengisi Biodata.');
+                    return;
+                }
             }
 
             // Ambil Update Terakhir dari element
             const updateInfoText = document.getElementById('updateInfoText').textContent;
             const updateText = updateInfoText ? `Update Terakhir: ${updateInfoText}` : '';
 
-            // Setup jsPDF
+            // Setup jsPDF (Landscape untuk Salur agar muat 9 kolom, Portrait untuk Pengisian)
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'pt', 'a4'); // Portrait
+            const doc = new jsPDF(isSalur ? 'l' : 'p', 'pt', 'a4');
 
             // Buat icon PNG dari SVG menggunakan canvas
             const svgString = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#ffffff" width="64" height="64"><path stroke-linecap="round" stroke-linejoin="round" d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="m15 5 4 4" /></svg>`;
@@ -1177,7 +2387,6 @@
                         ctx.fill();
                         
                         // Gambar SVG icon dengan padding agar tidak terlalu besar
-                        // Kotak berukuran 64x64, kita gambar icon ukuran 40x40 di posisi (12, 12)
                         ctx.drawImage(img, 12, 12, 40, 40);
                         resolve(canvas.toDataURL('image/png'));
                     };
@@ -1213,10 +2422,10 @@
             doc.text("TA 2026", 248, 42);
 
             // Judul Tabel
-            doc.setFontSize(13);
+            doc.setFontSize(12);
             doc.setFont("helvetica", "bold");
             doc.setTextColor(0, 0, 0);
-            doc.text("Daftar Sekolah - Status Verval Ditolak, Belum Mulai & Mengisi Biodata", 40, 90);
+            doc.text(reportTitle, 40, 90);
 
             // Teks Update Terakhir
             if (updateText) {
@@ -1226,33 +2435,62 @@
                 doc.text(updateText, 40, 105);
             }
 
-            // Kolom tabel
-            const columns = ["No", "Kecamatan", "NPSN", "Nama Sekolah", "Status"];
-            const rows = dataToExport.map((row, index) => {
-                let currentStatus = '';
-                const rawStatus = String(row['Status'] || '').toLowerCase().trim();
-                if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
-                    currentStatus = 'Verval Ditolak';
-                } else if (rawStatus.includes('mengisi biodata')) {
-                    currentStatus = 'Mengisi Biodata';
-                } else {
-                    currentStatus = 'Belum Mulai';
-                }
-                
-                return [
-                    index + 1,
-                    row['Kecamatan'] || '-',
-                    row['NPSN'] || '-',
-                    row['Nama Sekolah'] || '-',
-                    currentStatus
-                ];
-            });
+            // Kolom dan Baris tabel
+            let columns = [];
+            let rows = [];
+
+            if (isSalur) {
+                columns = ["No", "Kecamatan", "NPSN", "Nama Sekolah", "Dana Diterima", "Lapor Dana Diterima", "Lapor BAST", "Lapor LPJ", "Status"];
+                rows = dataToExport.map((row, index) => {
+                    const st = row.isRejected ? 'Verval Ditolak' : getDerivedSalurStatus(row);
+                    const danaDiterimaVal = getRowValue(row, 'Dana Diterima') || (row.inSalur ? 'Sudah' : 'Belum');
+                    const laporDanaVal = getRowValue(row, 'Lapor Dana Diterima') || 'Belum';
+                    return [
+                        index + 1,
+                        getRowValue(row, 'Kecamatan') || '-',
+                        getRowValue(row, 'NPSN') || '-',
+                        getRowValue(row, 'Nama Sekolah') || '-',
+                        danaDiterimaVal,
+                        laporDanaVal,
+                        getRowValue(row, 'BAST') || 'Belum',
+                        getRowValue(row, 'LPJ') || 'Belum',
+                        st
+                    ];
+                });
+            } else {
+                columns = ["No", "Kecamatan", "NPSN", "Nama Sekolah", "Status"];
+                rows = dataToExport.map((row, index) => {
+                    let currentStatus = '';
+                    const rawStatus = String(row['Status'] || '').toLowerCase().trim();
+                    if (row.isRejected || rawStatus.includes('tolak') || rawStatus === 'verval ditolak') {
+                        currentStatus = 'Verval Ditolak';
+                    } else if (rawStatus.includes('mengisi biodata') || rawStatus.includes('pengisian data')) {
+                        currentStatus = 'Tahap Mengisi Biodata';
+                    } else if (rawStatus.includes('ttd kepsek') || rawStatus.includes('kepala sekolah')) {
+                        currentStatus = 'Tahap TTD Kepsek';
+                    } else if (rawStatus.includes('ppk') || rawStatus.includes('tte ppk') || rawStatus.includes('ttd ppk')) {
+                        currentStatus = 'Tahap TTD PPK';
+                    } else if (rawStatus.includes('100%') || rawStatus.includes('selesai') || rawStatus.includes('lengkap') || rawStatus.includes('diterima') || rawStatus.includes('salur')) {
+                        currentStatus = 'Lengkap';
+                    } else {
+                        currentStatus = 'Belum Mulai';
+                    }
+                    
+                    return [
+                        index + 1,
+                        row['Kecamatan'] || '-',
+                        row['NPSN'] || '-',
+                        row['Nama Sekolah'] || '-',
+                        row['Status'] || currentStatus
+                    ];
+                });
+            }
 
             doc.autoTable({
                 head: [columns],
                 body: rows,
                 startY: 120,
-                styles: { fontSize: 9, cellPadding: 3 },
+                styles: { fontSize: isSalur ? 8 : 9, cellPadding: 3 },
                 headStyles: { fillColor: [14, 63, 130] }, // Warna biru tema
                 alternateRowStyles: { fillColor: [245, 247, 250] },
                 margin: { top: 120, right: 40, bottom: 40, left: 40 }
@@ -1265,7 +2503,7 @@
             const hh = String(now.getHours()).padStart(2, '0');
             const min = String(now.getMinutes()).padStart(2, '0');
             const ss = String(now.getSeconds()).padStart(2, '0');
-            const fileName = `Daftar_Sekolah_Ditolak_Belum_Mulai_Mengisi_Biodata_${yyyy}${mm}${dd}_${hh}${min}${ss}.pdf`;
+            const fileName = `${filePrefix}_${yyyy}${mm}${dd}_${hh}${min}${ss}.pdf`;
             doc.save(fileName);
         }
 
