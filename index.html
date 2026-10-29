@@ -551,11 +551,25 @@
             if (!url) return '';
             let raw = String(url).trim();
             if (/^(https?:\/\/|mailto:|tel:|#|data:)/i.test(raw)) {
-                return raw;
+                return raw.replace(/^https?:\/\/appdisdikkabciamis\.github\.io\/(?!simenulis\/)/i, 'https://appdisdikkabciamis.github.io/simenulis/');
             }
-            // Sama seperti pada Informasi dan Video Panduan: hapus awalan "/" atau "./"
-            // agar menjadi relative path (misal "faq-bsi.html") dan mengikuti folder aktif (/simenulis/)
-            return raw.replace(/^(\.\/|\/)+/, '');
+            let cleanPath = raw.replace(/^(\.\/|\/)+/, '');
+            if (cleanPath.toLowerCase().startsWith('simenulis/')) {
+                cleanPath = cleanPath.slice('simenulis/'.length);
+            }
+            // Saat dibuka lokal (file:// atau localhost), gunakan path relatif
+            if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return cleanPath;
+            }
+            // Saat di-embed di Google Sites atau dibuka di GitHub Pages, gunakan URL lengkap dengan /simenulis/
+            // karena Google Sites menyisipkan <base href=".../simenulis"> tanpa garis miring penutup
+            return `https://appdisdikkabciamis.github.io/simenulis/${cleanPath}`;
+        }
+
+        function isInternalPageLink(url) {
+            if (!url) return false;
+            const raw = String(url).trim().toLowerCase();
+            return !/^(https?:\/\/|mailto:|tel:)/i.test(raw) || raw.includes('appdisdikkabciamis.github.io/simenulis/') || raw.includes('faq-bsi.html');
         }
 
         function formatImageUrl(url) {
@@ -645,7 +659,7 @@
                 const imgUrl = formatImageUrl(rawImg);
                 const rawLink = item.link ? String(item.link).trim() : '';
                 const link = normalizeLinkUrl(rawLink);
-                const isExternalLink = /^https?:\/\//i.test(link);
+                const isExternalLink = !isInternalPageLink(rawLink);
                 const targetAttr = isExternalLink ? ' target="_blank" rel="noopener noreferrer"' : '';
                 const customLabel = item.label || item.judul || item.tombol || item.teks || '';
                 const linkCfg = link ? getPopupLinkConfig(rawLink, customLabel) : null;
@@ -973,7 +987,7 @@
                                 } else {
                                     // Render sebagai kartu Tautan Informasi (Link Non-Video)
                                     const hrefUrl = normalizeLinkUrl(embedUrl);
-                                    const isExternal = /^https?:\/\//i.test(hrefUrl);
+                                    const isExternal = !isInternalPageLink(embedUrl);
                                     const isFaq = embedUrl.toLowerCase().includes('faq');
                                     const displayTitle = (video.title && video.title.trim() !== '')
                                         ? video.title.trim()
