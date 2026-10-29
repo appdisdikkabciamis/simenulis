@@ -39,22 +39,24 @@ function doGet(e) {
       }
     }
 
-    // Fetch Instagram popups from the 'ig' sheet
+    // Fetch Instagram / Information popups from the 'ig' sheet
     let igPopups = [];
     const igSheet = allSheets.find(s => s.getName().trim().toLowerCase() === "ig");
     if (igSheet) {
       const igData = igSheet.getDataRange().getValues();
       if (igData.length > 1) {
         const igHeaders = igData[0].map(h => String(h).trim().toLowerCase());
-        const linkIndex = igHeaders.findIndex(h => h === "link" || h === "url" || h === "link instagram" || h.includes("instagram"));
+        const linkIndex = igHeaders.findIndex(h => h === "link" || h === "url" || h === "link instagram" || h.includes("link") || h.includes("instagram"));
         const gambarIndex = igHeaders.findIndex(h => h === "gambar" || h === "foto" || h === "image" || h.includes("gambar"));
+        const labelIndex = igHeaders.findIndex(h => h === "judul" || h === "label" || h === "tombol" || h === "teks" || h === "keterangan" || h === "title");
         
         for (let i = 1; i < igData.length; i++) {
           const row = igData[i];
           const link = (linkIndex !== -1 && row[linkIndex] !== undefined) ? String(row[linkIndex]).trim() : "";
           const gambar = (gambarIndex !== -1 && row[gambarIndex] !== undefined) ? String(row[gambarIndex]).trim() : "";
+          const label = (labelIndex !== -1 && row[labelIndex] !== undefined) ? String(row[labelIndex]).trim() : "";
           if (gambar !== "" || link !== "") {
-            igPopups.push({ gambar: gambar, link: link });
+            igPopups.push({ gambar: gambar, link: link, label: label });
           }
         }
       }
