@@ -1126,13 +1126,13 @@
                     rowCopy.inSalur = true;
                     rowCopy['Dana Diterima'] = 'Sudah';
                     const rawLapor = getRowValue(sRow, 'Lapor Dana Diterima') || getRowValue(sRow, 'Dana Diterima') || getRowValue(sRow, 'Dana');
-                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().trim() === 'sudah';
+                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().includes('sudah');
                     rowCopy['Lapor Dana Diterima'] = isLaporSudah ? 'Sudah' : 'Belum';
                     rowCopy['Tgl Dana Diterima'] = getRowValue(sRow, 'Tgl Dana Diterima') || getRowValue(sRow, 'Tanggal') || '';
                     const rawBast = getRowValue(sRow, 'BAST');
-                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().includes('sudah')) ? 'Sudah' : 'Belum';
                     const rawLpj = getRowValue(sRow, 'LPJ') || getRowValue(sRow, 'Pertanggungjawaban');
-                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().includes('sudah')) ? 'Sudah' : 'Belum';
                     rowCopy['Bentuk'] = getRowValue(sRow, 'Bentuk') || getRowValue(pRow, 'Bentuk') || 'Negeri';
                     if (sRow.isRejected) rowCopy.isRejected = true;
                 } else {
@@ -1160,12 +1160,12 @@
                     rowCopy.inSalur = true;
                     rowCopy['Dana Diterima'] = 'Sudah';
                     const rawLapor = getRowValue(sRow, 'Lapor Dana Diterima') || getRowValue(sRow, 'Dana Diterima') || getRowValue(sRow, 'Dana');
-                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().trim() === 'sudah';
+                    const isLaporSudah = rawLapor && String(rawLapor).toLowerCase().includes('sudah');
                     rowCopy['Lapor Dana Diterima'] = isLaporSudah ? 'Sudah' : 'Belum';
                     const rawBast = getRowValue(sRow, 'BAST');
-                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['BAST'] = (rawBast && String(rawBast).toLowerCase().includes('sudah')) ? 'Sudah' : 'Belum';
                     const rawLpj = getRowValue(sRow, 'LPJ') || getRowValue(sRow, 'Pertanggungjawaban');
-                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().trim() === 'sudah') ? 'Sudah' : 'Belum';
+                    rowCopy['LPJ'] = (rawLpj && String(rawLpj).toLowerCase().includes('sudah')) ? 'Sudah' : 'Belum';
                     rowCopy['Status'] = getDerivedSalurStatus(rowCopy);
                     merged.push(rowCopy);
                 }
